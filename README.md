@@ -1,120 +1,52 @@
-# Sura Ransomware - Advanced Educational Security Research Project# Sura Ransomware
+# Sura Ransomware - Advanced Educational Security Research Project
 
-
-
-![Version](https://img.shields.io/badge/version-2.0-red.svg)## Brief Overview
-
-![Language](https://img.shields.io/badge/language-Go-blue.svg)Sura is a ransomware written from scratch in Go. It uses a mixture of ChaCha20 and ECIES cryptography in order to encrypt files securely so that they cannot be recovered by traditional recovery tools. Files which have been encrypted by Sura can only be decrypted using the corresponding decryptor.
-
+![Version](https://img.shields.io/badge/version-2.0-red.svg)
+![Language](https://img.shields.io/badge/language-Go-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)
+![License](https://img.shields.io/badge/license-Educational%20Only-orange.svg)
 
-![License](https://img.shields.io/badge/license-Educational%20Only-orange.svg)## Installation & Setup
+## ⚠️ LEGAL DISCLAIMER
 
-### Pre-requisites:
+**THIS SOFTWARE IS PROVIDED FOR EDUCATIONAL AND SECURITY RESEARCH PURPOSES ONLY**
 
-## ⚠️ LEGAL DISCLAIMER & LICENSE- [The Go Programming Language](https://go.dev)
+By accessing, downloading, or using this software, you acknowledge and agree to the following terms:
 
+1. **NO MALICIOUS USE**: This project is strictly for educational purposes, security research, and authorized penetration testing ONLY. Any malicious use is strictly prohibited and illegal.
 
-
-**THIS SOFTWARE IS PROVIDED FOR EDUCATIONAL AND SECURITY RESEARCH PURPOSES ONLY**### Compiling the Builder
-
-- In order to compile the builder program, you must run the `Build.bat` file.
-
-By accessing, downloading, or using this software, you acknowledge and agree to the following terms:- This will automatically download the dependencies and build the `Builder.exe` file in the current directory.
-
-
-
-### Terms of Use### Building the Ransomware
-
-- In order to build the encryptor and decryptor, you must run the `Builder.exe` program.
-
-1. **NO MALICIOUS USE**: This project is strictly for educational purposes, security research, and authorized penetration testing ONLY. Any malicious use is strictly prohibited and illegal.- Ensure that the builder is in the same directory as the `Encryptor` and `Decryptor` directories, as it will not be able to build them otherwise.
-
-- The builder will generate a unique ECIES key pair and output the compiled executables to the current directory.
-
-2. **AUTHORIZATION REQUIRED**: You must have explicit written authorization before testing this software on any system you do not own.- The `Sura-Built.exe` file is the encryptor. Use caution when handling it as it can cause a lot of damage to your system.
-
-- The `Decryptor-Built.exe` file is the decryptor. It will only decrypt files which were decrypted by the corresponding encryptor.
+2. **AUTHORIZATION REQUIRED**: You must have explicit written authorization before testing this software on any system you do not own.
 
 3. **NO LIABILITY**: The author(s) and contributor(s) of this project are NOT responsible for any misuse, damage, or illegal activities conducted with this software. You assume full legal responsibility for your actions.
 
-## Showcase
+4. **NO WARRANTY**: This software is provided "AS IS" without warranty of any kind, express or implied.
 
-4. **NO WARRANTY**: This software is provided "AS IS" without warranty of any kind, express or implied.https://github.com/SecDbg/Sura-Ransomware/assets/73649897/433e6e4e-bc92-4553-a4d8-68745591058d
+5. **VIRUS SCANNING PROHIBITION**: **DO NOT upload this software or any of its components to VirusTotal, ANY-RUN, Hybrid-Analysis, or any other public malware scanning service.** Public scanning burns signatures and defeats the educational purpose of studying evasion techniques.
 
-
-
-5. **VIRUS SCANNING PROHIBITION**: **DO NOT upload this software or any of its components to VirusTotal, ANY-RUN, Hybrid-Analysis, or any other public malware scanning service.** Public scanning burns signatures and defeats the educational purpose of studying evasion techniques.## Benefits of ChaCha20 and ECIES
-
-I chose this unique combination of encryption methods for several reasons:
-
-6. **LEGAL COMPLIANCE**: You are solely responsible for complying with all applicable local, state, national, and international laws and regulations.- ChaCha20's stream-based approach allows for byte-by-byte encryption, enabling the pattern of 1 byte encrypted, 2 bytes unencrypted.
-
-- ECIES offers similar security to RSA with shorter key lengths, making it a more efficient choice.
+6. **LEGAL COMPLIANCE**: You are solely responsible for complying with all applicable local, state, national, and international laws and regulations.
 
 7. **ATTRIBUTION**: If you use this code for research or educational presentations, proper attribution is required.
 
-
-
-### Consequences of Misuse## Ethical Considerations
-
-Releasing an open-source ransomware tool like Sura on GitHub presents ethical considerations, but it also offers significant benefits, particularly for security researchers:
-
-Unauthorized use of this software may result in:
-
-- Criminal prosecution under computer fraud and cybercrime laws- Open-source ransomware projects such as Sura can provide researchers with valuable insights into the techniques used by threat actors. This is critical for developing countermeasures and improving cybersecurity practices.
-
-- Civil lawsuits and financial penalties
-
-- Imprisonment in many jurisdictions- Open-source ransomware projects such as Sura can provide security professionals with an easy-to-use tool to simulate real-world scenarios in a safe and ethical manner. This can help in identifying vulnerabilities and weaknesses in existing defenses.
-
-- Permanent criminal record
-
-- Open-source ransomware projects such as Sura can promote collaboration within the cybersecurity community. Researchers can share their findings, and collectively work towards developer more robust defenses against threat actors utilising ransomware.
-
 **BY USING THIS SOFTWARE, YOU ACCEPT ALL RISKS AND LEGAL CONSEQUENCES. THE AUTHOR(S) DISCLAIM ALL LIABILITY.**
-
-## Disclaimer
 
 ---
 
-### Important Notice: This tool is intended for educational purposes only.
-
 ## 📋 Table of Contents
 
-- This software, referred to as Sura Ransomware, is provided strictly for educational and research purposes. Under no circumstances should this tool be used for any malicious activities, including but not limited to unauthorized access, data theft, or any other harmful actions.
+- [Overview](#-overview)
+- [Novel Evasion Techniques](#-novel-evasion-techniques)
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Requirements](#-requirements)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Configuration](#-configuration)
+- [Technical Details](#-technical-details)
+- [Detection Countermeasures](#-detection-countermeasures)
+- [Decryption](#-decryption)
+- [FAQ](#-faq)
 
-- [Overview](#overview)
+---
 
-- [Novel Evasion Techniques](#novel-evasion-techniques)### Usage Responsibility:
-
-- [Features](#features)
-
-- [Architecture](#architecture)- By accessing and using this tool, you acknowledge that you are solely responsible for your actions. Any misuse of this software is strictly prohibited, and the creator (SecDbg) disclaims any responsibility for how this tool is utilized. You are fully accountable for ensuring that your usage complies with all applicable laws and regulations in your jurisdiction.
-
-- [Requirements](#requirements)
-
-- [Installation](#installation)### No Liability:
-
-- [Usage](#usage)
-
-- [Configuration](#configuration)- The creator (SecDbg) of this tool shall not be held responsible for any damages or legal consequences resulting from the use or misuse of this software. This includes, but is not limited to, direct, indirect, incidental, consequential, or punitive damages arising out of your access, use, or inability to use the tool.
-
-- [Technical Details](#technical-details)
-
-- [Detection Countermeasures](#detection-countermeasures)### No Support:
-
-- [Decryption](#decryption)
-
-- [FAQ](#faq)- The creator (SecDbg) will not provide any support, guidance, or assistance related to the misuse of this tool. Any inquiries regarding malicious activities will be ignored.
-
-
-
----### Acceptance of Terms:
-
-
-
-## 🎯 Overview- By using this tool, you signify your acceptance of this disclaimer. If you do not agree with the terms stated in this disclaimer, do not use the software.
+## 🎯 Overview
 
 
 Sura Ransomware is an advanced security research project demonstrating state-of-the-art evasion techniques, modern cryptography, and sophisticated anti-analysis methods. This project showcases multiple **novel, never-before-seen techniques** developed specifically for this implementation.
