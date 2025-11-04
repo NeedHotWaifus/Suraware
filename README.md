@@ -71,7 +71,7 @@ Sura Ransomware is an advanced security research project demonstrating state-of-
 
 ```powershell
 # Clone the repository
-git clone https://github.com/NeedHotWaifus/Suraware.git
+git clone https://github.com/Suraware/Suraware.git
 cd Suraware
 
 # Run the automated build script
@@ -290,8 +290,8 @@ github.com/ecies/go/v2
 ### Step 1: Clone Repository
 
 ```powershell
-git clone https://github.com/yourusername/Sura-Ransomware.git
-cd Sura-Ransomware
+git clone https://github.com/Suraware/Suraware.git
+cd Suraware
 ```
 
 ### Step 2: Install Go
@@ -927,7 +927,7 @@ For questions or issues, please use GitHub Issues on this repository.
 
 For questions, issues, or research collaboration, please open an issue on GitHub:
 
-**https://github.com/NeedHotWaifus/Suraware/issues**
+**https://github.com/Suraware/Suraware/issues**
 
 ---
 
