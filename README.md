@@ -32,6 +32,7 @@ By accessing, downloading, or using this software, you acknowledge and agree to 
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
+- [Quick Start](#-quick-start)
 - [Novel Evasion Techniques](#-novel-evasion-techniques)
 - [Features](#-features)
 - [Architecture](#-architecture)
@@ -61,6 +62,35 @@ Sura Ransomware is an advanced security research project demonstrating state-of-
 - **Memory Mirage Behavioral Camouflage**
 - **Python-Based Source Obfuscation**
 - **Automated Build Pipeline**
+
+---
+
+## 🚀 Quick Start
+
+**TL;DR - Just run `Build.bat` and it will automatically build everything for you.**
+
+```powershell
+# Clone the repository
+git clone https://github.com/NeedHotWaifus/Suraware.git
+cd Suraware
+
+# Run the automated build script
+.\Build.bat
+```
+
+That's it! The build script will:
+- Download all Go dependencies
+- Build the Builder tool
+- Generate encryption keys
+- Compile all components (Encryptor, Decryptor, Dropper)
+- Output ready-to-use executables
+
+**Output files:**
+- `Sura-Dropper.exe` - Main executable (use this one)
+- `Decryptor-Built.exe` - Decryption tool for recovery
+- `private_key.pem` - Keep this secret for decryption
+
+**Note:** This repository is no longer maintained. Feel free to fork and modify for your own research purposes.
 
 ---
 
