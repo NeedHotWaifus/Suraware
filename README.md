@@ -33,7 +33,7 @@ By accessing, downloading, or using this software, you acknowledge and agree to 
 
 - [Overview](#-overview)
 - [Quick Start](#-quick-start)
-- [Novel Evasion Techniques](#-novel-evasion-techniques)
+- [Evasion Techniques](#-evasion-techniques)
 - [Features](#-features)
 - [Architecture](#-architecture)
 - [Requirements](#-requirements)
@@ -49,18 +49,17 @@ By accessing, downloading, or using this software, you acknowledge and agree to 
 
 ## 🎯 Overview
 
-
-Sura Ransomware is an advanced security research project demonstrating state-of-the-art evasion techniques, modern cryptography, and sophisticated anti-analysis methods. This project showcases multiple **novel, never-before-seen techniques** developed specifically for this implementation.
+Sura Ransomware is a security research project demonstrating modern evasion techniques, cryptography, and anti-analysis methods. This implementation combines well-known techniques from malware research and red team tooling into an educational platform for studying ransomware behavior and detection.
 
 ### Key Highlights
 
-- **4 Novel Zero-Day Evasion Techniques**
 - **Hybrid ChaCha20 + ECIES Encryption**
+- **Partial Encryption (Every 3rd Byte)**
 - **Multi-Stage Dropper Architecture**
-- **3-Method UAC Bypass System**
-- **Quantum Polymorphic Encoding**
-- **Memory Mirage Behavioral Camouflage**
-- **Python-Based Source Obfuscation**
+- **Multi-Method UAC Bypass System**
+- **Polymorphic Source Obfuscation**
+- **Behavioral Evasion Techniques**
+- **Python-Based Build-Time Obfuscation**
 - **Automated Build Pipeline**
 
 ---
@@ -110,63 +109,64 @@ That's it! The build script will:
 
 ---
 
-## 🚀 Novel Evasion Techniques
+## � Evasion Techniques
 
-Sura implements **four cutting-edge techniques** not found in existing malware:
+This project implements various anti-analysis and evasion techniques commonly found in modern malware. These are **well-known methods** from malware research, combined for educational study:
 
-### 1️⃣ Quantum State Validation (QSV)
+### Timing-Based Sandbox Detection
 
-**Never seen before** - Validates execution environment using hardware entropy sources and quantum-like timing measurements.
+Measures CPU timing and entropy quality to detect virtualized/sandboxed environments.
 
 **How it works:**
-- Measures CPU timing jitter and hardware randomness
-- Detects virtual machine time dilation
-- Uses quantum-inspired entropy measurements
+- Measures CPU timing jitter across multiple iterations
+- Checks hardware randomness quality
+- Detects VM time dilation patterns
 - Validates system clock stability
-- Aborts execution in sandboxes/emulators
+- Aborts execution if anomalies detected
 
-**Detection resistance:** Behavioral analysis cannot distinguish from legitimate system checks.
+**Limitations:** Timing checks are fragile and prone to false positives. Modern sandboxes use time-smoothing and can defeat naive timing measurements.
 
-### 2️⃣ Memory Mirage
+### Behavioral Camouflage (Memory Mirage)
 
-**Novel behavioral camouflage technique** - Creates realistic decoy activity patterns in memory to confuse behavioral analysis.
-
-**How it works:**
-- Spawns decoy threads simulating Office document processing
-- Creates fake browser activity with HTML parsing
-- Generates Windows Update-like memory patterns
-- Injects benign software signatures (Chrome, Word, Defender)
-- Allocates/deallocates memory mimicking normal applications
-- Real encryption operations execute alongside legitimate-looking activity
-
-**Detection resistance:** EDR and behavioral analysis see "normal" application activity while encryption runs in parallel.
-
-### 3️⃣ Phantom Thread Injection (Disabled by default)
-
-**Advanced thread hijacking** - Executes code by hijacking legitimate process threads without creating suspicious new threads.
+Spawns decoy threads simulating benign application activity to raise noise for behavioral detection systems.
 
 **How it works:**
-- Suspends legitimate threads in designated processes
-- Injects shellcode into existing thread context
-- Resumes thread executing injected code
-- No new thread creation = no thread creation alerts
+- Spawns threads that simulate Office document processing
+- Creates memory patterns resembling browser activity
+- Generates Windows Update-like behaviors
+- Allocates/deallocates memory mimicking normal apps
+- Real encryption runs alongside decoy activity
 
-**Note:** Currently disabled due to high detection rates. Available for research purposes.
+**Limitations:** EDRs use multiple correlated signals (process lineage, file I/O, syscalls, network). Superficial decoy threads may not hide actual malicious behavior. Effectiveness against modern behavioral engines is unproven.
 
-### 4️⃣ Quantum Polymorphic Encoding
+### Polymorphic String Obfuscation
 
-**Seven-layer encoding system** with runtime self-modification.
+Multi-layer string encoding that changes each build to evade static signature extraction.
 
 **Encoding layers:**
-1. Base64 (foundation)
+1. Base64 encoding
 2. XOR with rotating key
-3. Bit rotation (ROT13 variant)
+3. Bit rotation
 4. Byte shuffling with seed
 5. Checksum validation
 6. Reverse mutation
-7. Polymorphic reassembly
+7. Runtime reassembly
 
-**Detection resistance:** Strings and signatures change every execution. Static analysis cannot extract IOCs.
+**Limitations:** Static obfuscation raises the bar but doesn't defeat dynamic analysis or emulation. Modern scanners use entropy heuristics and behavioral analysis that can catch obfuscated samples.
+
+### Environmental Keying
+
+Restricts execution based on system properties (geography, hostname, domain).
+
+**Limitations:** Operational security feature, not a detection evasion. Network checks and region validation leave logs and can be bypassed by defenders.
+
+### Other Techniques
+
+- **PPID Spoofing** - Makes process appear to spawn from legitimate parent (e.g., explorer.exe)
+- **UAC Bypass** - Registry hijacking via fodhelper.exe and eventvwr.exe auto-elevation
+- **Phantom Thread Injection** - Thread hijacking (disabled due to high detection rates)
+
+**Note:** These are known techniques documented in malware analysis literature. This implementation is for studying how they work and how to detect them.
 
 ---
 
@@ -181,13 +181,14 @@ Sura implements **four cutting-edge techniques** not found in existing malware:
 - **Cryptographically Secure** - Cannot be decrypted without private key
 
 #### Evasion & Stealth
-- ✅ Quantum State Validation (anti-VM/sandbox)
-- ✅ Memory Mirage (behavioral camouflage)
-- ✅ Quantum Polymorphic Encoding (string obfuscation)
-- ✅ Environmental Keying (region-based execution)
+- ✅ Timing-based sandbox detection (anti-VM checks)
+- ✅ Behavioral camouflage (decoy thread activity)
+- ✅ Polymorphic string obfuscation (multi-layer encoding)
+- ✅ Environmental keying (region-based execution)
 - ✅ PPID Spoofing (parent process masquerading)
 - ✅ Stealth Techniques (mutex, persistence, file attributes)
 - ✅ Python Source Obfuscation (pre-compilation mutation)
+- ⚠️ **Note:** These are known techniques from malware research, not novel methods
 
 #### Privilege Escalation
 - **UAC Bypass Method 1**: Fodhelper.exe silent registry bypass (Windows 10+)
@@ -231,11 +232,11 @@ Sura-Ransomware/
 │   ├── configuration/   # Centralized configuration
 │   ├── encryption/      # ChaCha20 + ECIES crypto
 │   ├── filewalker/      # Recursive file traversal
-│   ├── quantum/         # Quantum State Validation
-│   ├── mirage/          # Memory Mirage technique
-│   ├── phantom/         # Phantom Thread Injection
+│   ├── quantum/         # Timing-based detection
+│   ├── mirage/          # Behavioral camouflage
+│   ├── phantom/         # Thread injection (disabled)
 │   ├── polymorphic/     # Runtime polymorphism
-│   ├── obfuscation/     # Quantum Polymorphic Encoding
+│   ├── obfuscation/     # Multi-layer string encoding
 │   ├── envkey/          # Environmental keying
 │   ├── stealth/         # Stealth and persistence
 │   ├── ppid/            # PPID spoofing
@@ -874,7 +875,7 @@ A: All executables are in the `dist/` folder: `Sura-Built.exe` (raw), `Sura-Pack
 A: The dropper should compile cleanly because it contains no ransomware code. However, signatures may eventually be added after public release.
 
 **Q: Why not use a traditional crypter/packer?**  
-A: Most crypters are heavily signatured. Our custom dropper with AES encryption is novel and unsignatured.
+A: Most crypters are heavily signatured by AV vendors. Our custom dropper with AES encryption is less commonly seen, though effectiveness varies.
 
 ### Technical Questions
 
@@ -891,10 +892,10 @@ A: Ransomware encrypts user files (Documents, Desktop, Pictures). These don't re
 A: We exploit auto-elevation in fodhelper.exe and eventvwr.exe. These binaries run as admin without UAC prompt and execute our payload via registry hijacking.
 
 **Q: Can sandboxes detect this?**  
-A: Quantum State Validation detects most sandboxes through timing analysis and entropy quality checks. Memory Mirage also confuses behavioral analysis.
+A: The timing-based checks attempt to detect sandboxes through timing analysis and entropy measurements. However, modern sandboxes can defeat these checks with time-smoothing and instrumentation. Effectiveness is not guaranteed.
 
-**Q: What is Memory Mirage?**  
-A: A novel technique where decoy threads create "normal" application activity (Office, browser, Windows Update) while real encryption happens in parallel. EDR sees benign behavior.
+**Q: What is behavioral camouflage (Memory Mirage)?**  
+A: Decoy threads create simulated "normal" application activity (Office, browser, Windows Update patterns) while real encryption runs in parallel. This is meant to raise noise for behavioral detection systems, though modern EDRs use multiple correlated signals that may still detect malicious activity.
 
 **Q: Why are some features disabled?**  
 A: EDR unhooking, anti-AV, phantom threads, VX-API, and LOTL were removed because they have very high detection rates that outweigh their benefits.
@@ -985,13 +986,22 @@ If you discover vulnerabilities in these evasion techniques, please disclose res
 
 ## 📝 Changelog
 
-### Version 2.0 (Current)
-- ✅ Added 4 novel evasion techniques
+### Version 2.1 (Current)
+- ✅ Removed complex temp directory build methods
+- ✅ Simplified build system - all output to `dist/` folder
+- ✅ Improved Crypter with fallback strategies
+- ✅ Decryptor build simplified (no evasion needed)
+- ✅ Dropper now optional (build continues if fails)
+- ✅ Updated README to remove unsubstantiated "novel" claims
+- ✅ Better drop locations (AppData, Microsoft folders, Startup)
+- ✅ Added comprehensive troubleshooting documentation
+
+### Version 2.0
+- ✅ Implemented timing-based sandbox detection
 - ✅ Implemented multi-stage dropper architecture
 - ✅ Added 3-method UAC bypass system
-- ✅ Implemented Quantum State Validation
-- ✅ Implemented Memory Mirage behavioral camouflage
-- ✅ Implemented Quantum Polymorphic Encoding
+- ✅ Implemented behavioral camouflage (decoy threads)
+- ✅ Implemented polymorphic string obfuscation
 - ✅ Added Python source obfuscator
 - ✅ Removed high-detection features (EDR unhooking, anti-AV, etc.)
 - ✅ Fixed all Go 1.17+ unsafe.Pointer compliance issues
