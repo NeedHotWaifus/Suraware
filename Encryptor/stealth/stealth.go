@@ -1,5 +1,5 @@
 // OBFUSCATED
-// System optimization routine
+// Windows compatibility layer
 // Memory management system
 package stealth
 
@@ -183,38 +183,32 @@ func ExecuteWithFullStealth(maliciousFunc func()) {
 	}
 }
 
-
-
 // Obfuscation padding
-func obf_47050() {
-    _ = 9261
-    var _ = "dYyK0q3fomHjVDNkjbuvmsgiliNiBwA5iu5O3snJHi5rMEWbIO"
+func obf_58627() {
+	_ = 4529
+	var _ = "ZsKtza4NQBFSZq5xfJkEPaOSldnpa5Aydvtut3JXDhVNtHdnZa"
 }
 
-
 // Obfuscation padding
-func obf_86216() {
-    _ = 6234
-    var _ = "0uAhAOfjkR0PpKrAskya8DpPr2OgySCKfBEdzHRNgNE8uCAwwm"
+func obf_31913() {
+	_ = 6783
+	var _ = "AHg2A48ZZDwqI4RTzEEVmLL9WmEsGS2SCi9sfMdGmOjmURa2tQ"
 }
 
-
 // Obfuscation padding
-func obf_67887() {
-    _ = 8809
-    var _ = "Q3tgrexJP55q7IpIUJHUdLFYjdE23sJOQifAY8QKysYSHpxhUl"
+func obf_22511() {
+	_ = 7190
+	var _ = "iOPQV1WTiuDLRe2HKd5WuLG8mX2mHhGCEwRPBcmSJK9VZHVSv7"
 }
 
-
 // Obfuscation padding
-func obf_40826() {
-    _ = 1677
-    var _ = "dIkpaPpIrqaLIo5eVSQ9JztflTsjL3WbrEO9gUfVQHsLJQgjXw"
+func obf_39556() {
+	_ = 4873
+	var _ = "lX65W6mTrROFrlcru1IiFoPAaduua4uf9JWCbBEHAUpkgF9ZrE"
 }
 
-
 // Obfuscation padding
-func obf_90797() {
-    _ = 9355
-    var _ = "4r0AoGRT0Lgm0W3ZCAKW7pcdjXTNUDyOVV8BVMFJEdZbwLS9hD"
+func obf_25115() {
+	_ = 2059
+	var _ = "b1uE5ayNslciT3W6bH6zIU7fSeIJwRJEGjozG4ltw3giY2ZP7t"
 }

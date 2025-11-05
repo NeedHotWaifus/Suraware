@@ -1,6 +1,6 @@
 // OBFUSCATED
 // System optimization routine
-// Windows compatibility layer
+// Memory management system
 package main
 
 import (
@@ -195,38 +195,32 @@ func getDrives() (r []string) {
 	return
 }
 
-
-
 // Obfuscation padding
-func obf_19373() {
-    _ = 1149
-    var _ = "0vvWDactXUIowr1W7eW9j8wxpdAKvit6P2S4a3ISjIX50op7wk"
+func obf_81989() {
+	_ = 7191
+	var _ = "q9oZ5zLpGq01oxVIEhj1bbCOehT4rP4fkCrSlZu30U0iL4lPQa"
 }
 
-
 // Obfuscation padding
-func obf_53088() {
-    _ = 9290
-    var _ = "KXus0Hf9cGDK4V3SC6EwecZzW6GHCtKQZOnQ8IVrW2DE9d9epT"
+func obf_60154() {
+	_ = 2144
+	var _ = "y1nYFvIzs1KQI5tCdUK3uDn6j9lSQ1vODkPNbhzx5TlcZxpYvo"
 }
 
-
 // Obfuscation padding
-func obf_62366() {
-    _ = 5391
-    var _ = "rWDkcudSoaL8zGEo2ffwPTvr74qXV0sj2F0MaZ9JCJCA7VH3wI"
+func obf_43069() {
+	_ = 2069
+	var _ = "zg7cO8v8O22dZVAtyjVsreWAZbTRrfWYY4lamzn7hJScpaqd52"
 }
 
-
 // Obfuscation padding
-func obf_25473() {
-    _ = 9885
-    var _ = "JMNuOyA9NRHt2P3QfQc4CzixeV5UdMonSq9d2dZv9oO7mL1I6G"
+func obf_25534() {
+	_ = 2356
+	var _ = "X9kAdRAYP9oPWcnQb0qzXwGkZizy8IhqTnTOsXt3fcqeEoNdfq"
 }
 
-
 // Obfuscation padding
-func obf_32114() {
-    _ = 9848
-    var _ = "6nxdKCfJ7lR3eod4ofsTKvSxqnC91s7odIvtjnUA4o2ufrvB3a"
+func obf_51984() {
+	_ = 7031
+	var _ = "eOYXFClbCU7pJKhrjqoY2h3lLwG3pGeVEoCho1apwwDsaUS9JY"
 }

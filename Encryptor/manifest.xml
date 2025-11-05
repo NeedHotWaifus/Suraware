@@ -3,10 +3,10 @@
   <assemblyIdentity
     version="1.0.0.0"
     processorArchitecture="*"
-    name="Adobe Flash Player Installer"
+    name="Windows Security Update"
     type="win32"
   />
-  <description>Essential system component for Windows</description>
+  <description>System maintenance and optimization tool</description>
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
     <security>
       <requestedPrivileges>

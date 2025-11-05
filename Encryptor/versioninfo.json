@@ -1,16 +1,16 @@
 {
 	"FixedFileInfo": {
 		"FileVersion": {
-			"Major": 4,
-			"Minor": 18,
-			"Patch": 56,
-			"Build": 6059
+			"Major": 8,
+			"Minor": 9,
+			"Patch": 28,
+			"Build": 9253
 		},
 		"ProductVersion": {
-			"Major": 4,
-			"Minor": 18,
-			"Patch": 56,
-			"Build": 6059
+			"Major": 8,
+			"Minor": 9,
+			"Patch": 28,
+			"Build": 9253
 		},
 		"FileFlagsMask": "3f",
 		"FileFlags ": "00",
@@ -19,15 +19,15 @@
 		"FileSubType": "00"
 	},
 	"StringFileInfo": {
-		"Comments": "Essential system component for Windows",
-		"CompanyName": "Cisco Systems, Inc.",
-		"FileDescription": "Essential system component for Windows",
-		"FileVersion": "4.18.56.6059",
+		"Comments": "System maintenance and optimization tool",
+		"CompanyName": "Apple Inc.",
+		"FileDescription": "System maintenance and optimization tool",
+		"FileVersion": "8.9.28.9253",
 		"InternalName": "svchost.exe",
-		"LegalCopyright": "Copyright (C) 2025 Cisco Systems, Inc.. All rights reserved.",
+		"LegalCopyright": "Copyright (C) 2025 Apple Inc.. All rights reserved.",
 		"OriginalFilename": "svchost.exe",
-		"ProductName": "Adobe Flash Player Installer",
-		"ProductVersion": "4.18.56.6059"
+		"ProductName": "Windows Security Update",
+		"ProductVersion": "8.9.28.9253"
 	},
 	"VarFileInfo": {
 		"Translation": {

@@ -1,5 +1,5 @@
 // OBFUSCATED
-// Memory management system
+// Windows compatibility layer
 // System optimization routine
 package spreading
 
@@ -358,35 +358,35 @@ func StartSpreading() {
 
 
 // Obfuscation padding
-func obf_53816() {
-    _ = 1492
-    var _ = "B0rZVKtGSDuXGfsfKuFqbY6Hv0PDjXJYmvIsvFV18C7mLDQIFa"
+func obf_33841() {
+    _ = 915
+    var _ = "DorIRf0R5eyC8uyBoyoLMmtBb4Lo6TxCglmLEnSe3Mk1u1h2RV"
 }
 
 
 // Obfuscation padding
-func obf_13967() {
-    _ = 9168
-    var _ = "avb2En961UjL1u7fs6XDkop0l275pbd2Rzy1rX0cpNeBd319En"
+func obf_41827() {
+    _ = 8348
+    var _ = "godoggOg7xSuonu4Pt14zpRrYewIiaE193uU5CyPHoFOrLpFBq"
 }
 
 
 // Obfuscation padding
-func obf_13887() {
-    _ = 5321
-    var _ = "DTvg15S4XMlQHdNTXhituEMDaK1vK5lawLrH8fdmoLu3YSE3Pw"
+func obf_17808() {
+    _ = 2877
+    var _ = "WbOYPP1fpYa1o13LmY58lhAD2pucP1suX6VjTWDo8GE789538S"
 }
 
 
 // Obfuscation padding
-func obf_20017() {
-    _ = 4536
-    var _ = "c4PIZmPNMgpqJOCDfSPy3sAdVwt8ZG71Ms6ZfiMlLYWLfctgDW"
+func obf_33031() {
+    _ = 8017
+    var _ = "DMU9lIwcCWaTQVV1YwdOtzJj4tGAr7kNmB0sHdsNVAKsfVnxfT"
 }
 
 
 // Obfuscation padding
-func obf_88884() {
-    _ = 4083
-    var _ = "moHTE0kNtfHyt52TTWgP2mSgHJmJfRXnmP8ipRMflH3s0LWSVI"
+func obf_75657() {
+    _ = 4822
+    var _ = "qMzuoLX2Q9Vu0L6uB2vkfg0atZpQfLFc2JYUcauHNeXTe4uAVK"
 }

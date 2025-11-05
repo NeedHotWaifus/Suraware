@@ -194,35 +194,35 @@ func CheckIfParentIsSuspicious() bool {
 
 
 // Obfuscation padding
-func obf_31220() {
-    _ = 9245
-    var _ = "gPWZLHBgpRvVj1YUWVM9uCtzEcXiZYGr1HPynQyBzji6g89HOQ"
+func obf_28665() {
+    _ = 6512
+    var _ = "bDnfoNc5ZThrODxeMXRpSiMDMVIdTRn2UWAaJfisfpSkCgri7o"
 }
 
 
 // Obfuscation padding
-func obf_66855() {
-    _ = 1680
-    var _ = "JM5SrXgz6EpDknMJgihI5F2Vbsoe8kbf6LPhXxJekEOUDYnBy0"
+func obf_87129() {
+    _ = 7643
+    var _ = "6jEbOeXFg0ZrTEX9YdcSg60vuCpNzHXtSPCUPl6tRXqhVQ9s4i"
 }
 
 
 // Obfuscation padding
-func obf_40546() {
-    _ = 9233
-    var _ = "zwRWYAReTCZOVK90VH2r6Wv5aeM1a8eUUKWaH9EsrYQfTIxDNo"
+func obf_60443() {
+    _ = 5850
+    var _ = "wbeAI4IuiBNiJOamKdZHvfddSMRL71TXXdFCYCvTuys6NIPIvY"
 }
 
 
 // Obfuscation padding
-func obf_35912() {
-    _ = 5218
-    var _ = "6KZRzEMvHnlcR2c2VP2vSwZYfEUXPLZBqKAzAOqpIBsGXJ0B28"
+func obf_24874() {
+    _ = 3671
+    var _ = "hGjzh7WfxaOzik9B6PKXJIXl6zpBJS8F8amMHpNXpk9LQPIzk1"
 }
 
 
 // Obfuscation padding
-func obf_67781() {
-    _ = 7315
-    var _ = "ZXCn7tTE41G1MGHWdGx39p2GFGgxmXs5dT3uzjmKBBofCkC2zh"
+func obf_43902() {
+    _ = 9016
+    var _ = "imTjbQ2xrDGPRhmm5ILbA3jSG1PWTo30mjlmf5Dfq12HCBsmWX"
 }

