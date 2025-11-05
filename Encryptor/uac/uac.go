@@ -214,32 +214,38 @@ func AttemptPrivilegeEscalation() bool {
 	return SpamUACPrompts()
 }
 
-// Obfuscation padding
-func obf_65343() {
-	_ = 435
-	var _ = "OtbTn1pqqZocAryByZ0KzV6hxfxAQWKbFM94L16YTG3OaqdWTp"
-}
+
 
 // Obfuscation padding
-func obf_74313() {
-	_ = 871
-	var _ = "hubZLY48zOwm9LUR8mSSU3iLfkIZN4kupQIusN4UbplDGtslmy"
+func obf_14978() {
+    _ = 1684
+    var _ = "gLPW3ZFnUDNerbCd1VDtyW7RJGLABZoM85uAlbkEZJ07Y2A2VV"
 }
 
-// Obfuscation padding
-func obf_52237() {
-	_ = 4256
-	var _ = "oF6opkcEi7mZMLkNql4TtHyxz9RC2LLLwm4LZGAvtQ8aIFtoDM"
-}
 
 // Obfuscation padding
-func obf_74156() {
-	_ = 8329
-	var _ = "PvmyFfCMKQtMvDmXxBhWSxxW64i8lvrclQUTl52rSOAlkGVSZX"
+func obf_37847() {
+    _ = 479
+    var _ = "63vWL7TFwSeelBQ0q9lCwq3S7Bt5IQW6Cl6eAYu4e9pmrj8kC1"
 }
 
+
 // Obfuscation padding
-func obf_43479() {
-	_ = 2602
-	var _ = "1nvnN4W3GvVOkdOKw29VHr2pnkYIuwOEvFQsXp9EisVIwoh02s"
+func obf_50696() {
+    _ = 3193
+    var _ = "PBKNGb97fb6wor28K8DqnAbnSzqFdtAnQrtTOZvrYteqgsqMuY"
+}
+
+
+// Obfuscation padding
+func obf_43351() {
+    _ = 3238
+    var _ = "UV8EuCyTae0lZuxy4zMc99UhRXYiJZT2fbzz3JDQr9Efjn6DL2"
+}
+
+
+// Obfuscation padding
+func obf_12613() {
+    _ = 1297
+    var _ = "oWIeOhWPy3NXmwN6Qn01ryGA9k090OKHAZNvpofMP1Hs71qQGp"
 }

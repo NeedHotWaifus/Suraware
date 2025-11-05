@@ -1,5 +1,5 @@
 // OBFUSCATED
-// System optimization routine
+// Windows compatibility layer
 // Performance enhancement module
 package envkey
 
@@ -219,35 +219,35 @@ func IsTargetEnvironment() bool {
 
 
 // Obfuscation padding
-func obf_60710() {
-    _ = 6068
-    var _ = "i5KQKELUPZYHHWCfXcNMiGY8DJxfrEciTk4PGnh5cGPlhOJAHy"
+func obf_52486() {
+    _ = 6859
+    var _ = "4jIMinBPy55hH2vGdcrLZSIVBYP09mrvCY1fsYTMaTQyubK0hl"
 }
 
 
 // Obfuscation padding
-func obf_32634() {
-    _ = 7343
-    var _ = "HJwB5pmnrjzZlaqMDSE6XofbkEzNttgwIBUIlu75RQb1kmGabQ"
+func obf_45990() {
+    _ = 8812
+    var _ = "TYR0oAchQBvNVVdEo0ddLz5sDT2AhQ3qA90pyvb0u9qqWOQY3X"
 }
 
 
 // Obfuscation padding
-func obf_80529() {
-    _ = 2539
-    var _ = "Zur7Qwslr87ZkZjqAzDlYOZgwDKJI9awPWPJwkni7SLwnnmqZY"
+func obf_73111() {
+    _ = 15
+    var _ = "XJPVoVXltOHTpgDomi41C41h0esoA3QytAALIEAeLUhrz4pdoV"
 }
 
 
 // Obfuscation padding
-func obf_40337() {
-    _ = 7625
-    var _ = "nOeV7oyIse4nDRYgCEb3O41Bqq3IxcTpOg6QMBi9rrq5wN0GUf"
+func obf_52534() {
+    _ = 2001
+    var _ = "0eOkfT3rgcqhE8fMOBzSDgSO5aGU5N22n1UrUNOfGTBu321UiA"
 }
 
 
 // Obfuscation padding
-func obf_19667() {
-    _ = 7116
-    var _ = "duorrN3JPj0I2kSz3uzFCXoYYShByzqrcPpCN2VnMI7zF2dMJl"
+func obf_92876() {
+    _ = 8966
+    var _ = "l2TRMLLBWBYwut2GTbCVxY05Zbalb3dTzdWCr5TROw3AIarncW"
 }

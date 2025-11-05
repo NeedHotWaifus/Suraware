@@ -1,9 +1,9 @@
 package filewalker
 
 import (
-	Configuration "Prince-Ransomware/configuration"
-	Encryption "Prince-Ransomware/encryption"
-	"Prince-Ransomware/memory"
+	Configuration "Sura-Ransomware/configuration"
+	Encryption "Sura-Ransomware/encryption"
+	"Sura-Ransomware/memory"
 	"encoding/base64"
 	"math/rand"
 	"os"
