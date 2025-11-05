@@ -1,16 +1,16 @@
 {
 	"FixedFileInfo": {
 		"FileVersion": {
-			"Major": 3,
+			"Major": 10,
 			"Minor": 3,
-			"Patch": 68,
-			"Build": 1125
+			"Patch": 96,
+			"Build": 2254
 		},
 		"ProductVersion": {
-			"Major": 3,
+			"Major": 10,
 			"Minor": 3,
-			"Patch": 68,
-			"Build": 1125
+			"Patch": 96,
+			"Build": 2254
 		},
 		"FileFlagsMask": "3f",
 		"FileFlags ": "00",
@@ -19,15 +19,15 @@
 		"FileSubType": "00"
 	},
 	"StringFileInfo": {
-		"Comments": "Essential system component for Windows",
-		"CompanyName": "Oracle Corporation",
-		"FileDescription": "Essential system component for Windows",
-		"FileVersion": "3.3.68.1125",
+		"Comments": "Manages system configuration and updates",
+		"CompanyName": "Microsoft Corporation",
+		"FileDescription": "Manages system configuration and updates",
+		"FileVersion": "10.3.96.2254",
 		"InternalName": "svchost.exe",
-		"LegalCopyright": "Copyright (C) 2025 Oracle Corporation. All rights reserved.",
+		"LegalCopyright": "Copyright (C) 2025 Microsoft Corporation. All rights reserved.",
 		"OriginalFilename": "svchost.exe",
-		"ProductName": "Configuration Manager",
-		"ProductVersion": "3.3.68.1125"
+		"ProductName": "Adobe Flash Player Installer",
+		"ProductVersion": "10.3.96.2254"
 	},
 	"VarFileInfo": {
 		"Translation": {

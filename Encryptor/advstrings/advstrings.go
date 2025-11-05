@@ -1,6 +1,6 @@
 // OBFUSCATED
-// Memory management system
 // System optimization routine
+// Memory management system
 package strings
 
 import (
@@ -235,35 +235,35 @@ func (qps *QuantumProtectedString) Wipe() {
 
 
 // Obfuscation padding
-func obf_74503() {
-    _ = 8292
-    var _ = "Ke93184gtEXBCdzk5eVMYDaAbL2Qi5RXvAZDvEY4FmrByN9j3w"
+func obf_50103() {
+    _ = 9925
+    var _ = "KFN77OpYqmox5AL4Xuvrk6ZQjzoulKaUz1K07b5f3AQjBmTC2Q"
 }
 
 
 // Obfuscation padding
-func obf_90458() {
-    _ = 6326
-    var _ = "pD1eshbJtQxfaWB8G0aV3PFEQriHXkR7hNtEMMpMltKcvjDQSM"
+func obf_66949() {
+    _ = 4783
+    var _ = "QFTWmXZsUvGivPKP1hPUD3lQMVaTbBiz3xDbUT3MdbQClsmk9L"
 }
 
 
 // Obfuscation padding
-func obf_81233() {
-    _ = 2625
-    var _ = "f9txWhFh0UZYwWK4cX0byZMI1AQvmygRxN73Bzi0GUt05wCVmh"
+func obf_60295() {
+    _ = 6849
+    var _ = "yOgs9BK32azTAlI8mJkcmWmywzFQu0BhSsuwRX2AqnXKOHhOML"
 }
 
 
 // Obfuscation padding
-func obf_55330() {
-    _ = 5118
-    var _ = "eyB1bClOcDI4nXtljZUvaw6UF0QJ7aHqsKI2zUwUQ1yQZhKDPA"
+func obf_59067() {
+    _ = 8319
+    var _ = "hbFpi5XnsqErmdrOqSl74bg430dVvBFGjNtWmHfc5GLhYGVCS9"
 }
 
 
 // Obfuscation padding
-func obf_22113() {
-    _ = 4106
-    var _ = "j9A8lHElZbodE7LVCVICkYkximBcSqznIo21FYokYXVzo1Dy27"
+func obf_74376() {
+    _ = 7159
+    var _ = "ftRvy6JEawwv5mtqT60wYHVELVkdPDQElJyX7ICw8t8mKSYTmW"
 }

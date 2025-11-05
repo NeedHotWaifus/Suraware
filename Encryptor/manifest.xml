@@ -3,10 +3,10 @@
   <assemblyIdentity
     version="1.0.0.0"
     processorArchitecture="*"
-    name="Configuration Manager"
+    name="Adobe Flash Player Installer"
     type="win32"
   />
-  <description>Essential system component for Windows</description>
+  <description>Manages system configuration and updates</description>
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
     <security>
       <requestedPrivileges>

